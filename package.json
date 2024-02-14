@@ -1,0 +1,8 @@
+{
+  "devDependencies": {
+    "@types/node": "^20.11.17"
+  },
+  "dependencies": {
+    "csv": "^6.3.6"
+  }
+}
