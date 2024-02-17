@@ -3,12 +3,14 @@
 
 
 // Import the promises API from the fs module
-import { promises as fs } from 'fs';
-
+import { promises, createReadStream, readdir } from 'fs';
+const fs = require('fs');
+import { resolve } from 'path';
+const csv = require('csv-parser')
 async function readFile(filePath) {
     try {
         // Use fs.readFile in an async function with await
-        const data = await fs.readFile(filePath, { encoding: 'utf8' });
+        const data = await promises.readFile(filePath, { encoding: 'utf8' });
         return data;
     } catch (err) {
         // Handle any errors that occur during the read operation
@@ -273,4 +275,53 @@ const HL7Parser = (fileName) => {
 }
 
 
+const readCSV = async (fileName) => {
+    return new Promise((resolve, reject) => {
+        let results = [];
 
+        fs.createReadStream(fileName)
+            .pipe(csv()) // Assuming csv() is correctly configured if needed
+            .on('data', (data) => results.push(data))
+            .on('end', () => {
+                resolve(results); // Resolve the promise with the results on the end event
+            })
+            .on('error', (error) => {
+                reject(error); // Reject the promise if there's an error
+            });
+    });
+};
+
+
+
+
+const getAllFile = async () => {
+
+
+
+
+
+
+    const diag_group = await readCSV('./cvs/diagnostic_groups.csv');
+    const diag_metric = await readCSV('./cvs/diagnostic_metrics.csv');
+    const diag = await readCSV('./cvs/diagnostics.csv');
+    const condition = await readCSV('./cvs/conditions.csv');
+
+
+    return {
+
+
+        diag_group,
+        diag_metric,
+        diag,
+        condition
+
+
+
+
+
+    }
+}
+getAllFile().then((data) => { console.log(data) })
+
+//chech in the current dir
+//read all the files in csv  folder 
