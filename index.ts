@@ -29,7 +29,7 @@ const MshParser = (segment) => {
 
 const HL7Parser = (fileName) => {
 
-    const data = readFile(fileName).then((data) => {
+    return readFile(fileName).then((data) => {
 
         if (!data) {
             console.log('no data')
@@ -100,8 +100,6 @@ const HL7Parser = (fileName) => {
 
                 const data = arrayDifference(pidFields, Object.values(parsedData))
                 outPutTemplate.PID = parsedData
-
-
             } else if (segment.startsWith('PV1')) {
                 const pv1Fields = segment.split('|')
                 // Define an object to hold the parsed data
@@ -223,7 +221,7 @@ const HL7Parser = (fileName) => {
                     component: obxFields[18], // OBX-18: Component
                     referencePointer: obxFields[19] // OBX-19: Reference Pointer
                     // Additional fields can be added as needed
-                };
+                } as { [key: string]: string };
                 outPutTemplate.OBX = parsedData
                 const data = arrayDifference(obxFields, Object.values(parsedData))
             }
@@ -268,43 +266,91 @@ const HL7Parser = (fileName) => {
             return output
         }
         const formattedData = formaTedObject.map((item) => { return mergerItoObject(item) })
-        console.log(formattedData)
+        return formattedData
         //remove the empty value  from the object 
 
     })
 }
 
 
-const readCSV = async (fileName) => {
-    return new Promise((resolve, reject) => {
-        let results = [];
+type diagnostic_group = { diagnostics: string, diagnostic_metrics: string, name: string }
+
+//create the type of the object 
+type diagnostic_metric = {
+    name: string,
+    oru_sonic_codes: string,
+    diagnostic: string,
+    diagnostic_groups: string,
+    oru_sonic_units: string,
+    units: string,
+    min_age: string,
+    max_age: string,
+    standard_lower: string,
+    standard_higher: string,
+    everlab_lower: string,
+    everlab_higher: string,
+    gender: string
+
+}
+type diagnostic = {
+    name: string,
+    diagnostic_groups: string
+    diagnostic_metrics: string
+}
+type condition = {
+    name: string,
+    diagnostic: string
+}
+type CSV_group = condition | diagnostic | diagnostic_metric | diagnostic_group
+
+
+
+
+const readCSV = async (fileName: string, objectTemplate: condition | diagnostic | diagnostic_metric |
+    diagnostic_group) => {
+
+    return new Promise<CSV_group[]>((resolve, reject) => {
+        let results: typeof objectTemplate[] = []
 
         fs.createReadStream(fileName)
             .pipe(csv()) // Assuming csv() is correctly configured if needed
-            .on('data', (data) => results.push(data))
+            .on('data', (data: CSV_group) => {
+                const keys = Object.keys(data);
+                if (keys[0]) {
+                    const name = data[keys[0]]
+                    const newData = { ...data, name: name as string }
+                    results.push(newData)
+                }
+            })
             .on('end', () => {
                 resolve(results); // Resolve the promise with the results on the end event
             })
             .on('error', (error) => {
-                reject(error); // Reject the promise if there's an error
+                reject(new Error("parser had error")); // Reject the promise if there's an error
             });
     });
-};
 
 
 
+
+
+
+}
+    ;
+
+
+type CsvData = ReturnType<typeof readCSV>
 
 const getAllFile = async () => {
 
+    const diag_group = await readCSV('./cvs/diagnostic_groups.csv', { name: '', diagnostics: '', diagnostic_metrics: '' }) as diagnostic_group[];
 
+    const diag_template = { name: '', oru_sonic_codes: '', diagnostic: '', diagnostic_groups: '', oru_sonic_units: '', units: '', min_age: '', max_age: '', standard_lower: '', standard_higher: '', everlab_lower: '', everlab_higher: "" }
 
+    const diag_metric = await readCSV('./cvs/diagnostic_metrics.csv', diag_template) as diagnostic_metric[];
 
-
-
-    const diag_group = await readCSV('./cvs/diagnostic_groups.csv');
-    const diag_metric = await readCSV('./cvs/diagnostic_metrics.csv');
-    const diag = await readCSV('./cvs/diagnostics.csv');
-    const condition = await readCSV('./cvs/conditions.csv');
+    const diag = await readCSV('./cvs/diagnostics.csv', { name: '', diagnostic_groups: '', diagnostic_metrics: '' }) as diagnostic[];
+    const condition = await readCSV('./cvs/conditions.csv', { name: '', diagnostic: '' }) as condition[];
 
 
     return {
@@ -321,7 +367,29 @@ const getAllFile = async () => {
 
     }
 }
-getAllFile().then((data) => { console.log(data) })
 
+const input = HL7Parser("./test.oru.txt").then((data) => {
+
+
+    return data
+})
+const database = getAllFile().then((data) => { return data })
+
+
+Promise.allSettled([input, database]).then((data) => {
+
+    const input = data[0]
+    const database = data[1]
+
+    if (input.status == 'fulfilled' && database.status == 'fulfilled') {
+        const input_data = input.value as { MSH: {}, PID: {}, PV1: {}, ORC: {}, OBR: {}, OBX: {}[] }[]
+        const database_data = database.value
+        console.log(input_data[0].OBX.map((item) => console.log("hello", item)))
+        //console.log(database_data.diag_group.find((item) => console.log("hello", item.name)))
+    }
+
+
+
+})
 //chech in the current dir
 //read all the files in csv  folder 
