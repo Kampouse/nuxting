@@ -8,7 +8,7 @@ const fs = require('fs');
 import { resolve } from 'path';
 const csv = require('csv-parser')
 
-type mshObject = {
+type MSH = {
     fiedlSeparator: string,
     encodingCharacters: string,
     sendingApplication: string,
@@ -176,7 +176,7 @@ const HL7Parser = (fileName) => {
 
 
             const outPutTemplate = {
-                MSH: {} as mshObject,
+                MSH: {} as MSH,
                 PID: {} as PID,
                 PV1: {} as PV1,
                 ORC: {} as ORC,
@@ -464,12 +464,6 @@ const readCSV = async (fileName: string, objectTemplate: condition | diagnostic 
                 reject(new Error("parser had error")); // Reject the promise if there's an error
             });
     });
-
-
-
-
-
-
 }
     ;
 
@@ -503,6 +497,48 @@ const getAllFile = async () => {
     }
 }
 
+function transformHL7Data(input_data: { MSH: MSH, PID: PID, PV1: PV1, ORC: ORC, OBR: OBR, OBX: OBX[] }) {
+    const Pretty_result = {
+        MSH: input_data.MSH,
+        PID: input_data.PID,
+        PV1: input_data.PV1,
+        ORC: input_data.ORC,
+        OBR: input_data.OBR,
+        OBX: input_data.OBX, // Assuming this is not a typo and you indeed mean to access the 9th element for OBX
+    };
+
+    // Extract patient information
+    const patientInfo = {
+        name: Pretty_result.PID.patientName,
+        dob: Pretty_result.PID.dateOfBirth,
+        patientID: Pretty_result.PID.patientID,
+    };
+
+    // Extract order information (assuming single order for simplicity)
+    const orderInfo = {
+        testOrdered: Pretty_result.OBR.universalServiceIdentifier,
+        orderStatus: Pretty_result.ORC.orderStatus,
+        results: Pretty_result.OBX.map(obx => ({
+            test: obx.observationIdentifier,
+            value: obx.observationValue,
+            units: obx.units,
+            referenceRange: obx.referenceRange,
+            resultStatus: obx.observationResultsStatus,
+        }))
+    };
+
+    return {
+        patientInfo,
+        orderInfo,
+
+    };
+}
+
+// Exa
+
+
+
+
 const input = HL7Parser("./test.oru.txt").then((data) => {
 
 
@@ -516,11 +552,64 @@ Promise.allSettled([input, database]).then((data) => {
     const input = data[0]
     const database = data[1]
 
+    //find the result in the database 
+
+    //get the diag group
+
+    //get the diagnostic group
+
+
+
+
     if (input.status == 'fulfilled' && database.status == 'fulfilled') {
-        const input_data = input.value as { MSH: mshObject, PID: PID, PV1: PV1, ORC: ORC, OBR: OBR, OBX: OBX[] }[]
+        const input_data = input.value as { MSH: MSH, PID: PID, PV1: PV1, ORC: ORC, OBR: OBR, OBX: OBX[] }[]
+
+
+
+
+
+
+
+        // check if all the object are the same  and if they are not the same return an error
+
+
+
         const database_data = database.value
-        console.log(input_data[0].OBX.map((item) => console.log("hello", item)))
-        //console.log(database_data.diag_group.find((item) => console.log("hello", item.name)))
+        input_data.map((data) => {
+
+            //find the result in the database 
+            database.value.diag_metric.map((key) => {
+                //look on all the OBX of all the input data  to see if the name is the same as the name in the database
+
+                data.OBX.map((item) => {
+                    //get the string that is in suronded by ^ ^ and remove them
+                    const reg = /(?<=\^)(.*?)(?=\^)/g
+
+                    const match = reg.exec(item.observationIdentifier)
+                    if (match) {
+                        database.value.diag_metric.map((key) => {
+                            if (key.name == match[0]) {
+                                console.log("mathed", match[0])
+                                console.log("key->", key, "value->", item)
+
+                            }
+                            //trime firt and last element
+                        })
+                    }
+                    //trime firt and last element
+
+                })
+
+
+
+            })
+
+
+
+
+
+
+        })
     }
 
 
