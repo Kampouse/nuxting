@@ -7,6 +7,138 @@ import { promises, createReadStream, readdir } from 'fs';
 const fs = require('fs');
 import { resolve } from 'path';
 const csv = require('csv-parser')
+
+type mshObject = {
+    fiedlSeparator: string,
+    encodingCharacters: string,
+    sendingApplication: string,
+    sendingFacility: string,
+    receivingApplication: string,
+    receivingFacility: string,
+    dateTimeOfMessage: string,
+    security: string,
+    messageType: string,
+    messageControlId: string,
+    processingId: string,
+    versionId: string,
+    sequenceNumber: string,
+    continuationPointer: string,
+    acceptAcknowledgmentType: string,
+    applicationAcknowledgmentType: string,
+    countryCode: string
+}
+type PID = {
+    setID: string; // PID-1: Set ID
+    patientID: string; // PID-3: Patient ID
+    patientName: {
+        name: string; // PID-5: Last Name
+        middleName: string; // PID-7: Middle Name
+        degree: string; // PID-9: Degree
+    };
+    dateOfBirth: string; // PID-11: Date of Birth
+    sex: string; // PID-12: Sex
+    address: string; // PID-13: Address
+    phoneNumber: string; // PID-14: Phone Number
+    // Additional fields can be added as needed
+};
+type PV1 = {
+    setID: string;
+    patientClass: string;
+    assignedLocation: string;
+    admissionType: string;
+    preAdmitTestIndicator: string;
+    priority: string; // Assuming correct mapping will be provided
+    admitDateTime: string; // Assuming correct mapping will be provided
+    referralSource: string;
+    attendingDoctor: string;
+    admittingDoctor: string;
+    visitNumber: string;
+    financialClass: string;
+    chargePriceIndicator: string;
+    courtesyCode: string;
+    creditRating: string;
+    contractCode: string;
+    contractEffectiveDate: string;
+    contractAmount: string;
+    contractPeriod: string;
+    interestCode: string;
+    transferToBadDebtCode: string;
+    transferToBadDebtDate: string;
+    badDebtAgencyCode: string;
+    badDebtTransferAmount: string;
+    badDebtRecoveryAmount: string;
+    deleteAccountIndicator: string;
+    deleteAccountDate: string;
+    // Additional fields can be defined here as needed
+};
+
+type ORC = {
+    orderControl: string;
+    placerOrderNumber: string;
+    fillerOrderNumber: string;
+    orderStatus: string;
+    quantityTiming: string;
+    enteredBy: string;
+    orderEffectiveDateTime: string;
+    orderingProvider: string;
+    enteringOrganization: string;
+    enteringDevice: string;
+    actionBy: string;
+    // Additional fields can be defined here as needed
+};
+
+
+type OBR = {
+    setID: string;
+    placerOrderNumber: string;
+    fillerOrderNumber: string;
+    universalServiceIdentifier: string;
+    // Priority is deprecated as of v2.7, thus not included
+    requestedDateTime: string;
+    observationDateTime: string;
+    observationEndDateTime: string;
+    collectionVolume: string;
+    collectorIdentifier: string;
+    specimenActionCode: string;
+    dangerCode: string;
+    relevantClinicalInfo: string;
+    specimenReceivedDateTime: string;
+    // Specimen Source is deprecated as of v2.7, thus not included
+    orderingProvider: string;
+    orderCallbackPhoneNumber: string;
+    placerField1: string;
+    placerField2: string;
+    fillerField1: string;
+    fillerField2: string;
+    resultStatusChangeDateTime: string;
+    chargeToPractice: string;
+    diagnosticServiceSectionID: string;
+    resultStatus: string;
+    parentResult: string;
+    // Quantity/Timing and Result Copies To are deprecated as of v2.7 and v2.9 respectively, thus not included
+    transportationMode: string;
+    reasonForStudy: string;
+    // Additional fields can be defined here as needed, considering deprecations and updates in HL7 versions
+};
+type OBX = {
+    setID: string;
+    valueType: string;
+    observationIdentifier: string;
+    observationSubID: string;
+    observationValue: string; // May need to be any or a union type if handling multiple data types
+    units: string;
+    referenceRange: string;
+    abbreviation: string;
+    dateLastObservationNormalValues: string; // Consider using Date if appropriate
+    userDefinedAccessChecks: string;
+    observationResultsStatus: string;
+    dateofObservation: string; // Consider using Date if appropriate
+    producerID: string;
+    responsibleObserver: string;
+    // Additional fields can be defined here as needed
+};
+
+
 async function readFile(filePath) {
     try {
         // Use fs.readFile in an async function with await
@@ -38,21 +170,26 @@ const HL7Parser = (fileName) => {
         const segments = data?.split('\n')
         const objectOutput = [];
         const output_data = segments.map((segment, index) => {
+
+
+
+
+
             const outPutTemplate = {
-                MSH: {},
-                PID: {},
-                PV1: {},
-                ORC: {},
-                OBR: {},
-                OBX: {}
-            } as unknown as { MSH: {}, PID: {}, PV1: {}, ORC: {}, OBR: {}, OBX: {} }
+                MSH: {} as mshObject,
+                PID: {} as PID,
+                PV1: {} as PV1,
+                ORC: {} as ORC,
+                OBR: {} as OBR,
+                OBX: {} as OBX
+            }
+
+
+
 
 
             const list = [];
             if (segment.startsWith('MSH')) {
-                // reset the object 
-                //reset each value to empty object 
-
                 const msh = segment.split('|')
 
                 const mshObject = {
@@ -74,11 +211,8 @@ const HL7Parser = (fileName) => {
                     applicationAcknowledgmentType: msh[15],
                     countryCode: msh[16],
                 }
-                type mshType = keyof typeof mshObject;
                 const data = arrayDifference(msh, Object.values(mshObject))
-                //console.log(data)
-                outPutTemplate.MSH = mshObject as { [key in mshType]: string }
-                //console.log(mshObject)
+                outPutTemplate.MSH = mshObject
             }
             if (segment.startsWith('PID')) {
                 const pidFields = segment.split('|')
@@ -133,6 +267,10 @@ const HL7Parser = (fileName) => {
                     deleteAccountDate: pv1Fields[37] // PV1-37: Delete Account Date
                     // Additional fields can be added as needed
                 };
+
+
+
+
                 const data = arrayDifference(pv1Fields, Object.values(parsedData))
                 outPutTemplate.PV1 = parsedData
             }
@@ -153,6 +291,8 @@ const HL7Parser = (fileName) => {
                     actionBy: orcFields[19] // ORC-19: Action By
                     // Additional fields can be added as needed
                 };
+
+
                 const data = arrayDifference(orcFields, Object.values(parsedData))
                 outPutTemplate.ORC = parsedData
             }
@@ -215,13 +355,8 @@ const HL7Parser = (fileName) => {
                     dateofObservation: obxFields[12], // OBX-12: Date of Observation
                     producerID: obxFields[13], // OBX-13: Producer ID
                     responsibleObserver: obxFields[14], // OBX-14: Responsible Observer
-                    observationMethod: obxFields[15], // OBX-15: Observation Method
-                    equipmentInstanceIdentifier: obxFields[16], // OBX-16: Equipment Instance Identifier
-                    dateofAnalysis: obxFields[17], // OBX-17: Date of Analysis
-                    component: obxFields[18], // OBX-18: Component
-                    referencePointer: obxFields[19] // OBX-19: Reference Pointer
                     // Additional fields can be added as needed
-                } as { [key: string]: string };
+                }
                 outPutTemplate.OBX = parsedData
                 const data = arrayDifference(obxFields, Object.values(parsedData))
             }
@@ -382,7 +517,7 @@ Promise.allSettled([input, database]).then((data) => {
     const database = data[1]
 
     if (input.status == 'fulfilled' && database.status == 'fulfilled') {
-        const input_data = input.value as { MSH: {}, PID: {}, PV1: {}, ORC: {}, OBR: {}, OBX: {}[] }[]
+        const input_data = input.value as { MSH: mshObject, PID: PID, PV1: PV1, ORC: ORC, OBR: OBR, OBX: OBX[] }[]
         const database_data = database.value
         console.log(input_data[0].OBX.map((item) => console.log("hello", item)))
         //console.log(database_data.diag_group.find((item) => console.log("hello", item.name)))
