@@ -575,42 +575,54 @@ Promise.allSettled([input, database]).then((data) => {
 
 
         const database_data = database.value
-        input_data.map((data) => {
 
-            //find the result in the database 
-            database.value.diag_metric.map((key) => {
-                //look on all the OBX of all the input data  to see if the name is the same as the name in the database
+        const extractCorrectFieldWithMetric = (item: OBX) => {
+            const reg = /(?<=\^)(.*?)(?=\^)/g
+            const match = reg.exec(item.observationIdentifier)
+            if (match) {
+                return database.value.diag_metric.filter((key) => key.name ===
+                    match[0]).map((key) => {
+                        return { target: key, value: item };
+                    });
 
-                data.OBX.map((item) => {
-                    //get the string that is in suronded by ^ ^ and remove them
-                    const reg = /(?<=\^)(.*?)(?=\^)/g
 
-                    const match = reg.exec(item.observationIdentifier)
-                    if (match) {
-                        database.value.diag_metric.map((key) => {
-                            if (key.name == match[0]) {
-                                console.log("mathed", match[0])
-                                console.log("key->", key, "value->", item)
+            }
 
-                            }
-                            //trime firt and last element
-                        })
+
+        }
+
+
+        const output = input_data.map((data) => {
+            return database.value.diag_metric.map((key) => {
+
+                return data.OBX.map((item) => {
+                    const data = extractCorrectFieldWithMetric(item)
+                    if (data && data.length > 0) {
+                        // when there is data with metric  it goes here
+                        return { label: true, metric: true, data, item: null }
+
+                    } else {
+                        //when there no field in the database it goes here  
+                        if (item.valueType === 'NM') {
+                            return { label: false, metric: true, item, data: null }
+                        }
+                        return { label: false, metric: false, item, data: null }
                     }
-                    //trime firt and last element
+
 
                 })
-
-
-
             })
 
 
-
-
-
-
         })
+
+
     }
+
+
+
+
+
 
 
 
