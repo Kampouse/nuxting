@@ -31,6 +31,11 @@ function CurlMock() {
   return { data, pending, error }
 }
 
+
+function selectUser(user: string) {
+  navigateTo(`/user/${user}`)
+}
+
 const { data, pending, error } = CurlMock()
 const users =  data.value?.data.transformed
 const result =  data.value?.data.transformed[0].orderInfo.results
@@ -55,18 +60,19 @@ const result =  data.value?.data.transformed[0].orderInfo.results
       </TableRow>
     </TableHeader>
     <TableBody>
-      <TableRow v-for="user in users">
 
-      <NuxtLink to="/results">
-        hello user
-      </NuxtLink>
-        <TableCell class="font-medium">
+      <TableRow v-for="user in users" :key="user.patientInfo.patientID">
+
+
+        <TableCell class="font-medium"  @click="selectUser(user.patientInfo.patientID)">
           {{ user.patientInfo.patientID }}
         </TableCell>
-        <TableCell> {{user.patientInfo.name.middleName + " " + user.patientInfo.name.name }}</TableCell>
+            <TableCell> {{user.patientInfo.name.middleName + " " + user.patientInfo.name.name }}
+            </TableCell>
         <TableCell>{{user.orderInfo.testOrdered}}</TableCell>
 
       </TableRow>
+
     </TableBody>
   </Table>
 
