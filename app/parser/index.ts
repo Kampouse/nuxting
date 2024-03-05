@@ -312,6 +312,7 @@ const HL7Parser = (fileName) => {
                     dangerCode: obrFields[12], // OBR-12: Danger Code
                     relevantClinicalInfo: obrFields[13], // OBR-13: Relevant Clinical Info
                     specimenReceivedDateTime: obrFields[14], // OBR-14: Specimen Received Date/Time
+
                     // OBR-15: Specimen Source (deprecated as of v2.7)
                     orderingProvider: obrFields[16], // OBR-16: Ordering Provider
                     orderCallbackPhoneNumber: obrFields[17], // OBR-17: Order Callback Phone Number
@@ -516,6 +517,7 @@ function transformHL7Data(input_data: { MSH: MSH, PID: PID, PV1: PV1, ORC: ORC, 
     // Extract order information (assuming single order for simplicity)
     const orderInfo = {
         testOrdered: Pretty_result.OBR.universalServiceIdentifier,
+        observationDateTime: Pretty_result.OBR.observationDateTime,
         orderStatus: Pretty_result.ORC.orderStatus,
         results: Pretty_result.OBX.map(obx => ({
             test: obx.observationIdentifier,
@@ -537,10 +539,7 @@ function transformHL7Data(input_data: { MSH: MSH, PID: PID, PV1: PV1, ORC: ORC, 
 
 
 export const MockData = async () => {
-
     const input = HL7Parser("./parser/test.oru.txt").then((data) => {
-
-
         return data
     })
     const database = getAllFile().then((data) => { return data })
@@ -563,8 +562,7 @@ export const MockData = async () => {
         if (input.status == 'fulfilled' && database.status == 'fulfilled') {
             const input_data = input.value as { MSH: MSH, PID: PID, PV1: PV1, ORC: ORC, OBR: OBR, OBX: OBX[] }[]
 
-
-
+            const tranformed = input_data.map((item) => { return transformHL7Data(item) })
 
 
 
@@ -574,7 +572,7 @@ export const MockData = async () => {
             console.log(input_data)
 
             const database_data = database.value
-            return { input_data, database_data }
+            return { input_data, database_data, transformed: tranformed }
 
 
 

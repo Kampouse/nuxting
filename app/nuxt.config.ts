@@ -5,7 +5,18 @@ export default defineNuxtConfig({
 
     timeline: {
       enabled: true
-    }
+    },
+
+
+
+  },
+
+  css: ['~/assets/css/tailwind.css'],
+  postcss: {
+    plugins: {
+      tailwindcss: {},
+      autoprefixer: {},
+    },
   },
   modules: ['@nuxt/content']
 })
