@@ -33,19 +33,51 @@ function CurlMock() {
 
 
 function selectUser(user: string) {
-  navigateTo(`/user/${user}`)
+
+// take the first part of the string until teh 
+ user = user.split('^')[0]
+  navigateTo(`/patient/${user}`)
 }
+type PatientInfo = {
+  name: {
+        name: string;
+        middleName: string;
+        degree: string;
+    };
+    dob: string;
+    patientID: string;
+}
+function selectUserWithTest(user: String, test: string) {
+  console.log(user)
+  user = user.split('^')[0]
+  navigateTo(`/patient/${user}/result/${convertToUrl(test)}`)
+}
+
+function removeSymbols(str: string) { 
+ const  output =  str.split('^')
+  return    output.reverse().join(' ')
+}
+function stripEnds(str: string) {
+  return str.split('^')[0]
+}
+function convertToUrl(str: string) {
+    return  str.split('^')[1]
+}
+
+
 
 const { data, pending, error } = CurlMock()
 const users =  data.value?.data.transformed
+ 
+// make a computed property to get the results from the orderInfo
+
+
 const result =  data.value?.data.transformed[0].orderInfo.results
 
 
 </script>
 <template>
   <main>
-    <input ref="fileInput" type="file" @change="handleFileChange" />
-    <button @click="doSomething"> select file that is a o</button>
     <div v-if="pending">Loading...</div>
     <div v-else-if="error">Error: {{ error }}</div>
 <Table>
@@ -61,16 +93,19 @@ const result =  data.value?.data.transformed[0].orderInfo.results
     </TableHeader>
     <TableBody>
 
-      <TableRow v-for="user in users" :key="user.patientInfo.patientID">
+      <TableRow class="cursor-pointer" v-for="user in users" :key="user.patientInfo.patientID">
 
 
-        <TableCell class="font-medium"  @click="selectUser(user.patientInfo.patientID)">
-          {{ user.patientInfo.patientID }}
+        <TableCell class="font-medium" @click="selectUser(user.patientInfo.patientID)" >
+          {{ stripEnds( user.patientInfo.patientID) }}
         </TableCell>
-            <TableCell> {{user.patientInfo.name.middleName + " " + user.patientInfo.name.name }}
+          <TableCell  @click="selectUser(user.patientInfo.patientID)"
+          > {{ removeSymbols( user.patientInfo.name.middleName + " " + user.patientInfo.name.name) }}
             </TableCell>
-        <TableCell>{{user.orderInfo.testOrdered}}</TableCell>
-
+        <TableCell    
+          @click="selectUserWithTest(user.patientInfo.patientID,user.orderInfo.testOrdered )">
+          {{convertToUrl( user.orderInfo.testOrdered)}}
+        </TableCell>
       </TableRow>
 
     </TableBody>
@@ -81,7 +116,11 @@ const result =  data.value?.data.transformed[0].orderInfo.results
 
   </main>
 </template>
+<style scoped>
+
+  
 
 
 
+</style>
 
