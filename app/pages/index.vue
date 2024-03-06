@@ -20,7 +20,6 @@ function handleFileChange() {
 
 function doSomething() {
   const file = files.value[0]
-  console.log(file)
   // and do other things...
 }
 function CurlMock() {
@@ -48,7 +47,6 @@ type PatientInfo = {
     patientID: string;
 }
 function selectUserWithTest(user: String, test: string) {
-  console.log(user)
   user = user.split('^')[0]
   navigateTo(`/patient/${user}/result/${convertToUrl(test)}`)
 }
@@ -92,28 +90,20 @@ const result =  data.value?.data.transformed[0].orderInfo.results
       </TableRow>
     </TableHeader>
     <TableBody>
-
       <TableRow class="cursor-pointer" v-for="user in users" :key="user.patientInfo.patientID">
-
-
-        <TableCell class="font-medium" @click="selectUser(user.patientInfo.patientID)" >
+        <TableCell class="font-medium cursor-pointer" @click="selectUser(user.patientInfo.patientID)" >
           {{ stripEnds( user.patientInfo.patientID) }}
         </TableCell>
-          <TableCell  @click="selectUser(user.patientInfo.patientID)"
+          <TableCell class="cursor-pointer" @click="selectUser(user.patientInfo.patientID)"
           > {{ removeSymbols( user.patientInfo.name.middleName + " " + user.patientInfo.name.name) }}
             </TableCell>
-        <TableCell    
+        <TableCell    class="cursor-pointer"
           @click="selectUserWithTest(user.patientInfo.patientID,user.orderInfo.testOrdered )">
           {{convertToUrl( user.orderInfo.testOrdered)}}
         </TableCell>
       </TableRow>
-
     </TableBody>
   </Table>
-
-
-
-
   </main>
 </template>
 <style scoped>

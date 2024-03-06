@@ -138,7 +138,7 @@ type OBX = {
 };
 
 
-async function readFile(filePath) {
+async function readFile(filePath: string) {
     try {
         // Use fs.readFile in an async function with await
         const data = await promises.readFile(filePath, { encoding: 'utf8' });
@@ -150,15 +150,15 @@ async function readFile(filePath) {
 }
 
 
-function arrayDifference(array1, array2) {
+function arrayDifference(array1: any, array2: any) {
     return array1.filter(x => !array2.includes(x)).concat(array2.filter(x => !array1.includes(x)));
 }
 
-const MshParser = (segment) => {
+const MshParser = (segment: string) => {
     const mshIntake = segment.split('|')
 }
 
-const HL7Parser = (fileName) => {
+const HL7Parser = (fileName: string) => {
 
     return readFile(fileName).then((data) => {
 
@@ -569,7 +569,6 @@ export const MockData = async () => {
 
             // check if all the object are the same  and if they are not the same return an error
 
-            console.log(input_data)
 
             const database_data = database.value
             return { input_data, database_data, transformed: tranformed }
