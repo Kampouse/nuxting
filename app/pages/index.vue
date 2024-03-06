@@ -30,12 +30,11 @@ function CurlMock() {
   return { data, pending, error }
 }
 
-
 function selectUser(user: string) {
 
 // take the first part of the string until teh 
- user = user.split('^')[0]
-  navigateTo(`/patient/${user}`)
+const encoded =   encodeURIComponent(user)
+  navigateTo(`/patient/${encoded}`)
 }
 type PatientInfo = {
   name: {
@@ -46,23 +45,12 @@ type PatientInfo = {
     dob: string;
     patientID: string;
 }
-function selectUserWithTest(user: String, test: string) {
-  user = user.split('^')[0]
-  navigateTo(`/patient/${user}/result/${convertToUrl(test)}`)
+function selectUserWithTest(user: string, test: string) {
+  const encodedUser =  encodeURIComponent(user)
+  //replace / with %2F
+  const encodedTest =  encodeURIComponent(test)
+  navigateTo(`/patient/${encodedUser}/result/${encodedTest}`)
 }
-
-function removeSymbols(str: string) { 
- const  output =  str.split('^')
-  return    output.reverse().join(' ')
-}
-function stripEnds(str: string) {
-  return str.split('^')[0]
-}
-function convertToUrl(str: string) {
-    return  str.split('^')[1]
-}
-
-
 
 const { data, pending, error } = CurlMock()
 const users =  data.value?.data.transformed
@@ -92,14 +80,14 @@ const result =  data.value?.data.transformed[0].orderInfo.results
     <TableBody>
       <TableRow class="cursor-pointer" v-for="user in users" :key="user.patientInfo.patientID">
         <TableCell class="font-medium cursor-pointer" @click="selectUser(user.patientInfo.patientID)" >
-          {{ stripEnds( user.patientInfo.patientID) }}
+          {{ user.patientInfo.patientID }}
         </TableCell>
           <TableCell class="cursor-pointer" @click="selectUser(user.patientInfo.patientID)"
-          > {{ removeSymbols( user.patientInfo.name.middleName + " " + user.patientInfo.name.name) }}
+          > {{ user.patientInfo.name}}
             </TableCell>
         <TableCell    class="cursor-pointer"
           @click="selectUserWithTest(user.patientInfo.patientID,user.orderInfo.testOrdered )">
-          {{convertToUrl( user.orderInfo.testOrdered)}}
+          {{ user.orderInfo.testOrdered}}
         </TableCell>
       </TableRow>
     </TableBody>

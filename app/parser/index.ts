@@ -7,6 +7,7 @@ import { promises, createReadStream, readdir } from 'fs';
 import fs from 'fs';
 import { resolve } from 'path';
 import csv from 'csv-parser';
+import { test } from 'process';
 type MSH = {
     fiedlSeparator: string,
     encodingCharacters: string,
@@ -538,6 +539,11 @@ function transformHL7Data(input_data: { MSH: MSH, PID: PID, PV1: PV1, ORC: ORC, 
 // Exa
 
 
+
+
+
+
+
 export const MockData = async () => {
     const input = HL7Parser("./parser/test.oru.txt").then((data) => {
         return data
@@ -567,25 +573,53 @@ export const MockData = async () => {
 
 
 
+
             // check if all the object are the same  and if they are not the same return an error
 
 
             const database_data = database.value
-            return { input_data, database_data, transformed: tranformed }
+            const prettyFormatUser = (data: {
+                name: {
+                    name: string;
+                    middleName: string;
+                    degree: string;
+                };
+                dob: string;
+                patientID: string;
+            }) => {
+                const updateName = data.name.name.split('^').reverse().join(' ')
+                const PatientID = data.patientID.split('^')[0]
+                return { ...data, name: updateName, patientID: PatientID }
+            }
+            const prettyFormatOrder = (data: {
+                testOrdered: string;
+                observationDateTime: string;
+                orderStatus: string;
+                results: {
+                    test: string;
+                    value: string;
+                    units: string;
+                    referenceRange: string;
+                    resultStatus: string;
+                }[]
+            }) => {
 
-
-
+                return {
+                    ...data, testOrdered: data.testOrdered.split('^')[1]
+                }
+            }
+            const prettied = tranformed.map((item) => {
+                return {
+                    patientInfo: prettyFormatUser(item.patientInfo),
+                    orderInfo: prettyFormatOrder(item.orderInfo)
+                }
+            })
+            return { input_data, database_data, transformed: prettied }
         }
-
-
-
-
-
-
-
-
     })
 }
 export type Mocky = ReturnType<typeof MockData>
+
+
 //chech in the current dir
 //read all the files in csv  folder 
