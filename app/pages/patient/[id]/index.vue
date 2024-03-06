@@ -8,5 +8,6 @@ const  props = useRoute()
 
 <h1>
     user page
+    {{  props.params.id }}
 </h1>
 </template>

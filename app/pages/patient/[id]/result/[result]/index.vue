@@ -1,9 +1,15 @@
+<script setup>
+const  props = useRoute()
+const id = props.params.id;
+const result = props.params.result;
+console.log(props.params)
+
+
+</script>
 <template>
 
       <h1>
-
-        result page or smh
-
+{{  "id: " +  id +  " result:" +  result }}
       </h1>
 
 
