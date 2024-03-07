@@ -4,6 +4,7 @@
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev --dotenv .env",
+    "db": "npx drizzle-kit push:sqlite",
     "generate": "nuxt generate",
     "preview": "nuxt preview"
   },

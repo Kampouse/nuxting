@@ -9,6 +9,15 @@ export const todos = sqliteTable('todos', {
 
 //replace / with %2F
 
+const userTable = sqliteTable('user', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  patientID: text('patientID').notNull(),
+  name: text('username').notNull(),
+  dob: text('dob').notNull(),
+  createdAt: integer('created_at', { mode: 'timestamp' }).notNull(),
+  orderInfoTableId: integer('order_info_table_id').references(() => orderInfoTable.id),
+});
+
 
 const orderInfoTable = sqliteTable('order_info', {
   id: integer('id').primaryKey({ autoIncrement: true }),
