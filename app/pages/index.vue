@@ -47,7 +47,6 @@ type PatientInfo = {
 }
 function selectUserWithTest(user: string, test: string) {
   const encodedUser =  encodeURIComponent(user)
-  //replace / with %2F
   const encodedTest =  encodeURIComponent(test)
   navigateTo(`/patient/${encodedUser}/result/${encodedTest}`)
 }
