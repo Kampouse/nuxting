@@ -1,22 +1,12 @@
-import {MockData } from  "./index"
+import { MockData } from "./index"
 import { useDB } from '~/server/db/drizzle';
 import * as tables from '~/server/db/schema';
 
-
-
-
 const main = () => {
-
-
     const db = useDB()
-
     const data = MockData().then((data) => {
         let sharedid = 0
         data?.transformed.forEach(async (element) => {
-
-
-
-
             const order_data = await db.insert(tables.orderInfoTable).values({
                 testOrdered: element.orderInfo.testOrdered,
                 observationDateTime: element.orderInfo.observationDateTime,
@@ -30,13 +20,23 @@ const main = () => {
                     dob: element.patientInfo.dob,
                     orderInfoTableId: order_data[0].id
                 }).returning().execute()
+                element.orderInfo.results.forEach(async (result) => {
+                    const result_data = await db.insert(tables.results).values({
+                        test: result.test,
+                        value: result.value,
+                        units: result.units,
+                        referenceRange: result.referenceRange,
+                        resultStatus: result.resultStatus,
+                        orderInfoId: order_data[0].id
+                    }).returning().execute()
+                })
             }
 
         })
+
+
+
     })
-
-
-
 }
 
 
