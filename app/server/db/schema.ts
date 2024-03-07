@@ -20,7 +20,6 @@ export const orderInfoTable = sqliteTable('order_info', {
   observationDateTime: text('observation_date_time'),
   orderStatus: text('order_status'),
 });
-
 export const results = sqliteTable('results', {
   id: integer('id').primaryKey({ autoIncrement: true }),
   test: text('test'),

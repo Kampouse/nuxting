@@ -4,6 +4,9 @@
 
 // Import the promises API from the fs module
 import { promises, createReadStream, readdir } from 'fs';
+import { useDB } from '~/server/db/drizzle';
+import { userTable  } from '~/server/db/schema';
+
 import fs from 'fs';
 import { resolve } from 'path';
 import csv from 'csv-parser';
@@ -544,7 +547,7 @@ function transformHL7Data(input_data: { MSH: MSH, PID: PID, PV1: PV1, ORC: ORC, 
 
 
 
-export const MockData = async () => {
+export async  function MockData() {
     const input = HL7Parser("./parser/test.oru.txt").then((data) => {
         return data
     })
@@ -619,6 +622,15 @@ export const MockData = async () => {
     })
 }
 export type Mocky = ReturnType<typeof MockData>
+
+
+
+
+
+
+
+
+
 
 
 //chech in the current dir

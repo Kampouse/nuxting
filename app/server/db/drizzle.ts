@@ -14,6 +14,5 @@ export const useDB = () => {
     const sqlite = new Database(join(process.cwd(), './db.sqlite'))
     _db = drizzle(sqlite)
   }
-  console.log("what up", _db)
   return _db
 }
