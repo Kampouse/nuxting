@@ -9,6 +9,7 @@
     "preview": "nuxt preview"
   },
   "dependencies": {
+    "@aws-sdk/client-rds-data": "^3.525.0",
     "@libsql/client": "^0.5.3",
     "@nuxt/content": "^2.11.0",
     "@nuxtjs/tailwindcss": "^6.11.4",
