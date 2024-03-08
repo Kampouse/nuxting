@@ -86,7 +86,7 @@ const { data, pending, error } = CurlMock()
         <TableCell    class="cursor-pointer"
           >
           {{user.order_info?.testOrdered }}
-          <NuxtLink :to="selectUserWithTest( user.user.patientID, user.order_info?.testOrdered )"> view</NuxtLink>
+          <NuxtLink :to="selectUserWithTest( user.order_info?.id, user.order_info?.testOrdered )"> view</NuxtLink>
         </TableCell>
       </TableRow>
     </TableBody>

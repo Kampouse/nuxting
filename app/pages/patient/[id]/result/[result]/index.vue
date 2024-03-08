@@ -3,10 +3,9 @@ import { useFetch } from '#app';
 const  props = useRoute()
 const id = props.params.id;
 const result = props.params.result;
+console.log("hello",id)
+const { data, pending, error } =  useFetch(`/api/result/${id}`)
 
-const { data, pending, error } =  useFetch(`/api/result/${result}`);
-      
- 
 </script>
 <template>
 
@@ -19,14 +18,13 @@ const { data, pending, error } =  useFetch(`/api/result/${result}`);
 
                   <div v-if="data">
 
-                        <div v-for="item in data.data">
+                        <div v-for="item in data.data"  >
                                
                               {{ item.test }}
                               {{ item.resultStatus }}
                               {{ item.referenceRange }}
                               {{ item.units }}
-                              {{ item.result }}
-                              {{ item.value }}
+                             "result" {{ item.value }}
 
 
 
