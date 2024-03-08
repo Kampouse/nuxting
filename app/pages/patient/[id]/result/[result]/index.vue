@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { useFetch } from '#app';
 import {
   Table,
@@ -14,6 +14,13 @@ const  props = useRoute()
 const id = props.params.id;
 const result = props.params.result;
 const { data, pending, error } =  useFetch(`/api/result/${id}`)
+const  filterData = computed(() => {
+  if (data) {
+    return data.value?.data.filter((test) => test.referenceRange != "")
+  }
+})
+
+
 </script>
 <template>
       <div>
@@ -26,21 +33,25 @@ const { data, pending, error } =  useFetch(`/api/result/${id}`)
         <TableHead class="w-[100px]">
           test ID
         </TableHead>
-        <TableHead> Test name </TableHead>
-        <TableHead>Test value</TableHead>
+        <TableHead class="w-[100px]"> Test name </TableHead>
+        <TableHead class="text-center">Test value</TableHead>
+        <TableHead class=""> Reference range </TableHead>
       </TableRow>
     </TableHeader>
     <TableBody>
-      <TableRow class="cursor-pointer"  v-for="test in data?.data">
-        <TableCell class="font-medium cursor-pointer" @click="selectUser(user.user.patientID)" >
+      <TableRow class=""  v-for="test in  filterData">
+        <TableCell class="font-medium" >
           {{ test.id}}
         </TableCell>
           <TableCell 
           > {{ test.test}}
             </TableCell>
-        <TableCell    class="cursor-pointer"
-          >
+        <TableCell    class=" text-center">
           {{ test.value}}
+
+        </TableCell>
+         <TableCell>
+          {{ test.referenceRange}}
         </TableCell>
       </TableRow>
     </TableBody>
