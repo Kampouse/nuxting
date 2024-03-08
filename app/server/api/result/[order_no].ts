@@ -10,7 +10,7 @@ export default defineEventHandler(async (event) => {
         const decoded = decodeURIComponent(id);
         const db = useDB();
         const data = await db.select().from(tables.results).where(eq(tables.results.orderInfoId, parseInt(id))).execute();
-        eturn { data };
+        return { data };
         // Access the request data with typed properties (optional)
     }
 });

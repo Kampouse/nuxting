@@ -65,6 +65,7 @@ const { data, pending, error } = CurlMock()
     <div v-if="pending">Loading...</div>
     <div v-else-if="error">Error: {{ error }}</div>
 <Table>
+
     <TableCaption>A list of your recent invoices.</TableCaption>
     <TableHeader>
       <TableRow>
