@@ -32,7 +32,8 @@ const insertUser: InsertUser = {
 export default defineEventHandler(async (event) => {
 	//const data = await MockData();
 	const db = useDB();
-	const data = await db.select().from(userTable).leftJoin(orderInfoTable, eq(userTable.orderInfoTableId, orderInfoTable.id)).execute();
+	const data = await db.select().from(userTable)
+		.leftJoin(orderInfoTable, eq(userTable.orderInfoTableId, orderInfoTable.id)).execute();
 	///get 
 	//create an object with the data of both tables that match 
 

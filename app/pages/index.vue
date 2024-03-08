@@ -48,7 +48,7 @@ type PatientInfo = {
 function selectUserWithTest(user: string, test: string) {
   const encodedUser =  encodeURIComponent(user)
   const encodedTest =  encodeURIComponent(test)
-  navigateTo(`/patient/${encodedUser}/result/${encodedTest}`)
+  return `/patient/${encodedUser}/result/${encodedTest}`
 }
 
 const { data, pending, error } = CurlMock()
@@ -84,8 +84,9 @@ const { data, pending, error } = CurlMock()
           > {{ user.user.name}}
             </TableCell>
         <TableCell    class="cursor-pointer"
-          @click="selectUserWithTest(user.user.patientID,user.order_info?.testOrdered )">
+          >
           {{user.order_info?.testOrdered }}
+          <NuxtLink :to="selectUserWithTest( user.user.patientID, user.order_info?.testOrdered )"> view</NuxtLink>
         </TableCell>
       </TableRow>
     </TableBody>
