@@ -607,8 +607,11 @@ export async  function MockData() {
                 }[]
             }) => {
 
+                //maybe trim the trailing : at the end
                 return {
-                    ...data, testOrdered: data.testOrdered.split('^')[1]
+                    ...data, testOrdered: data.testOrdered.split('^')[1], results: data.results.map((item) => {
+                        return { ...item, test: item.test.split('^')[1] }
+                    })
                 }
             }
             const prettied = tranformed.map((item) => {

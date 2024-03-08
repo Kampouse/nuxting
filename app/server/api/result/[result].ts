@@ -1,6 +1,9 @@
+import { text } from "drizzle-orm/mysql-core";
+import { eq } from "drizzle-orm";
 import { MockData } from "../../../parser/index.js";
 import type { Mocky } from "../../../parser/index.js";
-
+import { useDB } from "~/server/db/drizzle.js";
+import * as tables from "~/server/db/schema.js";
 export default defineEventHandler(async (event) => {
 
     if (event.context.params) {
@@ -11,7 +14,8 @@ export default defineEventHandler(async (event) => {
 
 
         const data = await MockData();
-
+        const db = useDB();
+        db.select().from(tables.results).where(eq(tables.results.test, decoded)).execute();
 
 
 

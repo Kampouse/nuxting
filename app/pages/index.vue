@@ -52,7 +52,7 @@ function selectUserWithTest(user: string, test: string) {
 }
 
 const { data, pending, error } = CurlMock()
-const users =  data.value?.data.transformed
+
  
 // make a computed property to get the results from the orderInfo
 
@@ -76,16 +76,16 @@ const users =  data.value?.data.transformed
       </TableRow>
     </TableHeader>
     <TableBody>
-      <TableRow class="cursor-pointer" v-for="user in users" :key="user.patientInfo.patientID">
-        <TableCell class="font-medium cursor-pointer" @click="selectUser(user.patientInfo.patientID)" >
-          {{ user.patientInfo.patientID }}
+      <TableRow class="cursor-pointer"  v-for="user in data?.data" :key="user.user.patientID">
+        <TableCell class="font-medium cursor-pointer" @click="selectUser(user.user.patientID)" >
+          {{ user.user.patientID }}
         </TableCell>
-          <TableCell class="cursor-pointer" @click="selectUser(user.patientInfo.patientID)"
-          > {{ user.patientInfo.name}}
+          <TableCell class="cursor-pointer" @click="selectUser(user.user.patientID)"
+          > {{ user.user.name}}
             </TableCell>
         <TableCell    class="cursor-pointer"
-          @click="selectUserWithTest(user.patientInfo.patientID,user.orderInfo.testOrdered )">
-          {{ user.orderInfo.testOrdered}}
+          @click="selectUserWithTest(user.user.patientID,user.order_info?.testOrdered )">
+          {{user.order_info?.testOrdered }}
         </TableCell>
       </TableRow>
     </TableBody>
