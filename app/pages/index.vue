@@ -57,7 +57,6 @@ const users =  data.value?.data.transformed
 // make a computed property to get the results from the orderInfo
 
 
-const result =  data.value?.data.transformed[0].orderInfo.results
 
 
 </script>
