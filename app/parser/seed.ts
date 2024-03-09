@@ -4,6 +4,14 @@ import * as tables from '~/server/db/schema';
 
 const main = () => {
     const db = useDB()
+
+    const ouput = db.select().from(tables.userTable).execute().then((data) => {
+        if (data.length > 0) {
+            console.log("Data already is seeded. Exiting...")
+            process.exit(0)
+        }
+        return data
+    })
     const data = MockData().then((data) => {
         let sharedid = 0
         data?.transformed.forEach(async (element) => {
@@ -41,7 +49,7 @@ const main = () => {
 
 
 main()
-
+console.log("Data seeded successfully")
 
 
 
