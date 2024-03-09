@@ -33,8 +33,9 @@ function CurlMock() {
 function selectUser(user: string) {
 
 // take the first part of the string until teh 
+
 const encoded =   encodeURIComponent(user)
-  navigateTo(`/patient/${encoded}`)
+  return`/patient/${encoded}`
 }
 type PatientInfo = {
   name: {
@@ -61,33 +62,45 @@ const { data, pending, error } = CurlMock()
 
 </script>
 <template>
-  <main>
-    <div v-if="pending">Loading...</div>
-    <div v-else-if="error">Error: {{ error }}</div>
+  
+  <main class="">
+
+    <div class="    flex  items-center justify-left pl-2    font-mono  from-neutral-950 text-3xl    h-12 bg-[#61A3BC]">patient=>list</div>
+    
 <Table>
 
-    <TableCaption>A list of your recent invoices.</TableCaption>
     <TableHeader>
       <TableRow>
         <TableHead class="w-[100px]">
           Patient ID
         </TableHead>
-        <TableHead>Patient Name </TableHead>
-        <TableHead>Test Ordered</TableHead>
+        <TableHead class=" text-center">Patient Name </TableHead>
+        <TableHead class="text-left" >Test Ordered</TableHead>
       </TableRow>
     </TableHeader>
-    <TableBody>
+
+
+    <div v-if="pending"></div>
+    <div v-else-if="error">Error: {{ error }}</div>
+
+    <TableBody v-else>
       <TableRow class="cursor-pointer"  v-for="user in data?.data" :key="user.user.patientID">
-        <TableCell class="font-medium cursor-pointer" @click="selectUser(user.user.patientID)" >
+        <TableCell class="font-medium cursor-pointer">
           {{ user.user.patientID }}
         </TableCell>
-          <TableCell class="cursor-pointer" @click="selectUser(user.user.patientID)"
-          > {{ user.user.name}}
+          <TableCell class="cursor-pointer text-center"
+          > 
+          <NuxtLink :to="selectUser(user.user.patientID)">
+              {{ user.user.name}}
+          </NuxtLink>
+
+
             </TableCell>
-        <TableCell    class="cursor-pointer"
+        <TableCell    class="cursor-pointer text-left"
           >
+          <NuxtLink :to="selectUserWithTest( user.order_info?.id as string, user.order_info?.testOrdered as string )"> 
           {{user.order_info?.testOrdered }}
-          <NuxtLink :to="selectUserWithTest( user.order_info?.id, user.order_info?.testOrdered )"> view</NuxtLink>
+          </NuxtLink>
         </TableCell>
       </TableRow>
     </TableBody>

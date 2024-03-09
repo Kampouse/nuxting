@@ -24,40 +24,41 @@ const  filterData = computed(() => {
 </script>
 <template>
       <div>
-            <div v-if="pending">Loading...</div>
-            <div v-else>
-                  <div v-if="data">
+    <div class="    flex  items-center justify-left pl-2    font-mono  from-neutral-950 text-3xl    h-12 bg-[#61A3BC]">
+      
+     <NuxtLink :to="`/`">patient=> </NuxtLink>result</div>
+            
 <Table>
     <TableHeader>
       <TableRow>
-        <TableHead class="w-[100px]">
+        <TableHead class="">
           test ID
         </TableHead>
-        <TableHead class="w-[100px]"> Test name </TableHead>
-        <TableHead class="text-center">Test value</TableHead>
-        <TableHead class=""> Reference range </TableHead>
+        <TableHead class=""> Test name </TableHead>
+        <TableHead class="text-left ">Test value</TableHead>
+        <TableHead class="text-center"> Reference range </TableHead>
       </TableRow>
     </TableHeader>
-    <TableBody>
-      <TableRow class=""  v-for="test in  filterData">
+
+<div v-if="pending"></div>
+    <TableBody v-else>
+      <TableRow class=""  v-if="data" v-for="test in  filterData">
         <TableCell class="font-medium" >
           {{ test.id}}
         </TableCell>
           <TableCell 
           > {{ test.test}}
             </TableCell>
-        <TableCell    class=" text-center">
+        <TableCell    class=" text-left">
           {{ test.value}}
 
         </TableCell>
-         <TableCell>
+         <TableCell class="text-center">
           {{ test.referenceRange}}
         </TableCell>
       </TableRow>
     </TableBody>
   </Table>
-      </div>      
-      </div>      
       </div>      
       
 </template>
