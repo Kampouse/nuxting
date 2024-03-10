@@ -4,7 +4,7 @@
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev --dotenv .env",
-    "freshdb": "npx drizzle-kit push:sqlite &&  pnpm run seed",
+    "fresh": "npx drizzle-kit push:sqlite &&  pnpm run seed",
     "seed": "npx tsx  ./parser/seed.ts",
     "studio": "npx drizzle-kit studio",
 

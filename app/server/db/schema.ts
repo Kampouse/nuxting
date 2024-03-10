@@ -37,12 +37,12 @@ export const diagnosticMetricTable = sqliteTable('diagnostic_metric', {
   diagnosticGroups: text('diagnostic_groups').notNull(),
   oruSonicUnits: text('oru_sonic_units').notNull(),
   units: text('units').notNull(),
-  minAge: text('min_age').notNull(),
-  maxAge: text('max_age').notNull(),
-  standardLower: text('standard_lower').notNull(),
-  standardHigher: text('standard_higher').notNull(),
-  everlabLower: text('everlab_lower').notNull(),
-  everlabHigher: text('everlab_higher').notNull(),
+  minAge: integer('min_age').notNull(),
+  maxAge: integer('max_age').notNull(),
+  standardLower: integer('standard_lower').notNull(),
+  standardHigher: integer('standard_higher').notNull(),
+  everlabLower: integer('everlab_lower').notNull(),
+  everlabHigher: integer('everlab_higher').notNull(),
   gender: text('gender').notNull()
 });
 

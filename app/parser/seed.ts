@@ -65,7 +65,12 @@ const main = () => {
     }
 
     const injectCSVdata = (input: Mockdata) => {
-
+        const safeParse = (value: string) => {
+            if (value == "")
+                return 0
+            else
+                return parseInt(value)
+        }
 
         input.then((data) => {
             data?.database_data.diag_metric.forEach(async (element) => {
@@ -76,12 +81,12 @@ const main = () => {
                     diagnosticGroups: element.diagnostic_groups,
                     oruSonicUnits: element.oru_sonic_units,
                     units: element.units,
-                    minAge: element.min_age,
-                    maxAge: element.max_age,
-                    standardLower: element.standard_lower,
-                    standardHigher: element.standard_higher,
-                    everlabLower: element.everlab_lower,
-                    everlabHigher: element.everlab_higher,
+                    minAge: safeParse(element.min_age),
+                    maxAge: safeParse(element.max_age),
+                    standardLower: safeParse(element.standard_lower),
+                    standardHigher: safeParse(element.standard_higher),
+                    everlabLower: safeParse(element.everlab_lower),
+                    everlabHigher: safeParse(element.everlab_higher),
                     gender: element.gender
                 }).execute()
             })

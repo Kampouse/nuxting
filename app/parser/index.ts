@@ -484,11 +484,6 @@ const getAllFile = async () => {
 
     const diag = await readCSV('./parser/cvs/diagnostics.csv', { name: '', diagnostic_groups: '', diagnostic_metrics: '' }) as diagnostic[];
     const condition = await readCSV('./parser/cvs/conditions.csv', { name: '', diagnostic_metrics: '' }) as condition[];
-
-    console.log(condition)
-
-
-
     return {
 
 
