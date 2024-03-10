@@ -95,7 +95,7 @@ const main = () => {
             data?.database_data.condition.forEach(async (element) => {
                 db.insert(tables.conditionTable).values({
                     name: element.name,
-                    diagnostic: element.diagnostic ?? ""
+                    diagnostic: element.diagnostic_metrics ?? ""
                 }).execute()
             })
 

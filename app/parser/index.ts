@@ -5,7 +5,7 @@
 // Import the promises API from the fs module
 import { promises, createReadStream, readdir } from 'fs';
 import { useDB } from '~/server/db/drizzle';
-import { userTable  } from '~/server/db/schema';
+import { userTable } from '~/server/db/schema';
 
 import fs from 'fs';
 import { resolve } from 'path';
@@ -438,7 +438,7 @@ type diagnostic = {
 }
 type condition = {
     name: string,
-    diagnostic: string
+    diagnostic_metrics: string
 }
 type CSV_group = condition | diagnostic | diagnostic_metric | diagnostic_group
 
@@ -478,12 +478,15 @@ const getAllFile = async () => {
 
     const diag_group = await readCSV('./parser/cvs/diagnostic_groups.csv', { name: '', diagnostics: '', diagnostic_metrics: '' }) as diagnostic_group[];
 
-    const diag_template = { name: '', oru_sonic_codes: '', diagnostic: '', diagnostic_groups: '', oru_sonic_units: '', units: '', min_age: '', max_age: '', standard_lower: '', standard_higher: '', everlab_lower: '', everlab_higher: "" }
+    const diag_template = { name: '', oru_sonic_codes: '', diagnostic: '', diagnostic_groups: '', oru_sonic_units: '', units: '', min_age: '', max_age: '', standard_lower: '', standard_higher: '', everlab_lower: '', everlab_higher: "", gender: "" }
 
     const diag_metric = await readCSV('./parser/cvs/diagnostic_metrics.csv', diag_template) as diagnostic_metric[];
 
     const diag = await readCSV('./parser/cvs/diagnostics.csv', { name: '', diagnostic_groups: '', diagnostic_metrics: '' }) as diagnostic[];
-    const condition = await readCSV('./parser/cvs/conditions.csv', { name: '', diagnostic: '' }) as condition[];
+    const condition = await readCSV('./parser/cvs/conditions.csv', { name: '', diagnostic_metrics: '' }) as condition[];
+
+    console.log(condition)
+
 
 
     return {
@@ -547,7 +550,7 @@ function transformHL7Data(input_data: { MSH: MSH, PID: PID, PV1: PV1, ORC: ORC, 
 
 
 
-export async  function MockData() {
+export async function MockData() {
     const input = HL7Parser("./parser/test.oru.txt").then((data) => {
         return data
     })
