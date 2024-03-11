@@ -15,9 +15,19 @@ const result = props.params.result;
 const { data, pending, error } =  useFetch(`/api/result/${id}`)
 const  filterData = computed(() => {
   if (data) {
-    return data.value?.data.filter((test) => test.referenceRange != "")
+
+     
+    return data.value?.data
   }
 })
+
+const  filterResult = computed(() => {
+  if (data) {
+    console.log("whata up",data.value?.output)
+    return data.value?.output
+  }
+})
+
 
 
 </script>
@@ -43,10 +53,12 @@ const  filterData = computed(() => {
     <TableBody v-else>
       <TableRow class=""  v-if="data" v-for="test in  filterData">
         <TableCell class="font-medium" >
-          {{ test.id}}
+          {{ test.id }}
+          ----
+          {{  filterResult[0]?.name }}
         </TableCell>
           <TableCell 
-          > {{ test.test}}
+          > {{ test.test }}
             </TableCell>
         <TableCell    class=" text-left">
           {{ test.value}}
