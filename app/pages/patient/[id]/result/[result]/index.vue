@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useFetch } from '#app';
 import {
   Table,
   TableBody,

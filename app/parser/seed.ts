@@ -2,6 +2,7 @@ import { eq } from 'drizzle-orm';
 import { MockData } from "./index"
 import { useDB } from '~/server/db/drizzle';
 import * as tables from '~/server/db/schema';
+import type { diagnostic_metric } from './index';
 
 const main = () => {
     let db = useDB()
@@ -64,6 +65,40 @@ const main = () => {
         })
     }
 
+
+    const should_duplicate_diag = (data: diagnostic_metric) => {
+        const duplicate = data.oru_sonic_codes.split(";")
+        if (duplicate.length == 1) {
+            return false
+        }
+        else {
+            return true
+        }
+    }
+    const duplicate_if_required = (input: Mockdata) => {
+        return input.then((data) => {
+
+            const output = data?.database_data.diag_metric.filter(should_duplicate_diag)
+            if (output) {
+                return output.map((el) => {
+                    return el.oru_sonic_codes.split(";").map((content) => {
+                        return { ...el, oru_sonic_codes: content }
+
+                    }).flat()
+
+
+                }).flat()
+            }
+
+
+        }
+
+        )
+
+
+    }
+
+
     const injectCSVdata = (input: Mockdata) => {
         const safeParse = (value: string) => {
             if (value == "")
@@ -71,24 +106,32 @@ const main = () => {
             else
                 return parseInt(value)
         }
+        //get the sigle thing too
+        const value = duplicate_if_required(input)
 
-        input.then((data) => {
-            data?.database_data.diag_metric.forEach(async (element) => {
-                db.insert(tables.diagnosticMetricTable).values({
-                    name: element.name,
-                    oruSonicCodes: element.oru_sonic_codes,
-                    diagnostic: element.diagnostic,
-                    diagnosticGroups: element.diagnostic_groups,
-                    oruSonicUnits: element.oru_sonic_units,
-                    units: element.units,
-                    minAge: safeParse(element.min_age),
-                    maxAge: safeParse(element.max_age),
-                    standardLower: safeParse(element.standard_lower),
-                    standardHigher: safeParse(element.standard_higher),
-                    everlabLower: safeParse(element.everlab_lower),
-                    everlabHigher: safeParse(element.everlab_higher),
-                    gender: element.gender
-                }).execute()
+        input.then(async (data) => {
+            const val = await value
+            val?.forEach(async (element) => {
+
+                //may caus issue
+                if (element.oru_sonic_codes.includes(";") == false) {
+                
+                    db.insert(tables.diagnosticMetricTable).values({
+                        name: element.name,
+                        oruSonicCodes: element.oru_sonic_codes,
+                        diagnostic: element.diagnostic,
+                        diagnosticGroups: element.diagnostic_groups,
+                        oruSonicUnits: element.oru_sonic_units,
+                        units: element.units,
+                        minAge: safeParse(element.min_age),
+                        maxAge: safeParse(element.max_age),
+                        standardLower: safeParse(element.standard_lower),
+                        standardHigher: safeParse(element.standard_higher),
+                        everlabLower: safeParse(element.everlab_lower),
+                        everlabHigher: safeParse(element.everlab_higher),
+                        gender: element.gender
+                    }).execute()
+                }
             })
             data?.database_data.diag.forEach(async (element) => {
                 db.insert(tables.diagnosticTable).values({

@@ -1,16 +1,11 @@
-// read from a file 
-
-
-
-// Import the promises API from the fs module
 import { promises, createReadStream, readdir } from 'fs';
 import { useDB } from '~/server/db/drizzle';
 import { userTable } from '~/server/db/schema';
-
 import fs from 'fs';
 import { resolve } from 'path';
 import csv from 'csv-parser';
 import { test } from 'process';
+
 type MSH = {
     fiedlSeparator: string,
     encodingCharacters: string,
@@ -141,7 +136,6 @@ type OBX = {
     // Additional fields can be defined here as needed
 };
 
-
 async function readFile(filePath: string) {
     try {
         // Use fs.readFile in an async function with await
@@ -152,7 +146,6 @@ async function readFile(filePath: string) {
         console.error(err);
     }
 }
-
 
 function arrayDifference(array1: any, array2: any) {
     return array1.filter(x => !array2.includes(x)).concat(array2.filter(x => !array1.includes(x)));
@@ -173,11 +166,6 @@ const HL7Parser = (fileName: string) => {
         const segments = data?.split('\n')
         const objectOutput = [];
         const output_data = segments.map((segment, index) => {
-
-
-
-
-
             const outPutTemplate = {
                 MSH: {} as MSH,
                 PID: {} as PID,
@@ -186,10 +174,6 @@ const HL7Parser = (fileName: string) => {
                 OBR: {} as OBR,
                 OBX: {} as OBX
             }
-
-
-
-
 
             const list = [];
             if (segment.startsWith('MSH')) {
@@ -271,9 +255,6 @@ const HL7Parser = (fileName: string) => {
                     // Additional fields can be added as needed
                 };
 
-
-
-
                 const data = arrayDifference(pv1Fields, Object.values(parsedData))
                 outPutTemplate.PV1 = parsedData
             }
@@ -334,12 +315,9 @@ const HL7Parser = (fileName: string) => {
                     transportationMode: obrFields[30], // OBR-30: Transportation Mode
                     reasonForStudy: obrFields[31], // OBR-31: Reason for Study
                     // OBR-32: Principal Result Interpreter (deprecated as of v2.9)
-                    // ... continue with other fields as needed
                 };
                 const data = arrayDifference(obrFields, Object.values(parsedData))
                 outPutTemplate.OBR = parsedData
-                //console.log(parsedData)
-                //compare it tot eh base list 
             }
             else if (segment.startsWith('OBX')) {
                 const obxFields = segment.split('|');
@@ -379,9 +357,7 @@ const HL7Parser = (fileName: string) => {
         //now log the content of each slice 
         const formaTedObject = makePairs(mshLocations).map((item) => {
             return output_data.slice(item[0], item[1])
-
         })
-
         const mergerItoObject = (arr) => {
             const baseObject = { MSH: {}, PID: {}, PV1: {}, ORC: {}, OBR: {}, OBX: [] }
             const output = arr.reduce((acc, item) => {
@@ -407,15 +383,12 @@ const HL7Parser = (fileName: string) => {
         const formattedData = formaTedObject.map((item) => { return mergerItoObject(item) })
         return formattedData
         //remove the empty value  from the object 
-
     })
 }
 
-
 type diagnostic_group = { diagnostics: string, diagnostic_metrics: string, name: string }
-
 //create the type of the object 
-type diagnostic_metric = {
+export type diagnostic_metric = {
     name: string,
     oru_sonic_codes: string,
     diagnostic: string,
@@ -429,7 +402,6 @@ type diagnostic_metric = {
     everlab_lower: string,
     everlab_higher: string,
     gender: string
-
 }
 type diagnostic = {
     name: string,
@@ -441,10 +413,6 @@ type condition = {
     diagnostic_metrics: string
 }
 type CSV_group = condition | diagnostic | diagnostic_metric | diagnostic_group
-
-
-
-
 const readCSV = async (fileName: string, objectTemplate: condition | diagnostic | diagnostic_metric |
     diagnostic_group) => {
 
@@ -468,34 +436,21 @@ const readCSV = async (fileName: string, objectTemplate: condition | diagnostic 
                 reject(new Error("parser had error")); // Reject the promise if there's an error
             });
     });
-}
-    ;
-
+};
 
 type CsvData = ReturnType<typeof readCSV>
 
 const getAllFile = async () => {
-
     const diag_group = await readCSV('./parser/cvs/diagnostic_groups.csv', { name: '', diagnostics: '', diagnostic_metrics: '' }) as diagnostic_group[];
-
     const diag_template = { name: '', oru_sonic_codes: '', diagnostic: '', diagnostic_groups: '', oru_sonic_units: '', units: '', min_age: '', max_age: '', standard_lower: '', standard_higher: '', everlab_lower: '', everlab_higher: "", gender: "" }
-
     const diag_metric = await readCSV('./parser/cvs/diagnostic_metrics.csv', diag_template) as diagnostic_metric[];
-
     const diag = await readCSV('./parser/cvs/diagnostics.csv', { name: '', diagnostic_groups: '', diagnostic_metrics: '' }) as diagnostic[];
     const condition = await readCSV('./parser/cvs/conditions.csv', { name: '', diagnostic_metrics: '' }) as condition[];
     return {
-
-
         diag_group,
         diag_metric,
         diag,
         condition
-
-
-
-
-
     }
 }
 
@@ -508,15 +463,11 @@ function transformHL7Data(input_data: { MSH: MSH, PID: PID, PV1: PV1, ORC: ORC, 
         OBR: input_data.OBR,
         OBX: input_data.OBX, // Assuming this is not a typo and you indeed mean to access the 9th element for OBX
     };
-
-    // Extract patient information
     const patientInfo = {
         name: Pretty_result.PID.patientName,
         dob: Pretty_result.PID.dateOfBirth,
         patientID: Pretty_result.PID.patientID,
     };
-
-    // Extract order information (assuming single order for simplicity)
     const orderInfo = {
         testOrdered: Pretty_result.OBR.universalServiceIdentifier,
         observationDateTime: Pretty_result.OBR.observationDateTime,
@@ -529,55 +480,23 @@ function transformHL7Data(input_data: { MSH: MSH, PID: PID, PV1: PV1, ORC: ORC, 
             resultStatus: obx.observationResultsStatus,
         }))
     };
-
     return {
         patientInfo,
         orderInfo,
 
     };
 }
-
-// Exa
-
-
-
-
-
-
-
 export async function MockData() {
     const input = HL7Parser("./parser/test.oru.txt").then((data) => {
         return data
     })
     const database = getAllFile().then((data) => { return data })
-
-
     return Promise.allSettled([input, database]).then((data) => {
-
         const input = data[0]
         const database = data[1]
-
-        //find the result in the database 
-
-        //get the diag group
-
-        //get the diagnostic group
-
-
-
-
         if (input.status == 'fulfilled' && database.status == 'fulfilled') {
             const input_data = input.value as { MSH: MSH, PID: PID, PV1: PV1, ORC: ORC, OBR: OBR, OBX: OBX[] }[]
-
             const tranformed = input_data.map((item) => { return transformHL7Data(item) })
-
-
-
-
-
-            // check if all the object are the same  and if they are not the same return an error
-
-
             const database_data = database.value
             const prettyFormatUser = (data: {
                 name: {
@@ -604,7 +523,6 @@ export async function MockData() {
                     resultStatus: string;
                 }[]
             }) => {
-
                 //maybe trim the trailing : at the end
                 return {
                     ...data, testOrdered: data.testOrdered.split('^')[1], results: data.results.map((item) => {
@@ -623,16 +541,3 @@ export async function MockData() {
     })
 }
 export type Mocky = ReturnType<typeof MockData>
-
-
-
-
-
-
-
-
-
-
-
-//chech in the current dir
-//read all the files in csv  folder 
