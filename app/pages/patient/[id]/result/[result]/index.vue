@@ -8,6 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+
 const  props = useRoute()
 const id = props.params.id;
 const result = props.params.result;
@@ -64,7 +65,7 @@ const  filterResult = computed(() => {
         </TableHead>
         <TableHead class=""> Test name </TableHead>
         <TableHead class="text-left "> Value</TableHead>
-        <TableHead class="text-center"> ref::ever </TableHead>
+        <TableHead class="text-center"> reference::everlab </TableHead>
         <TableHead class="text-center"> Reference Range </TableHead>
         <TableHead class="text-center"> Everlab Range </TableHead>
       </TableRow>
