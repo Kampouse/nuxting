@@ -52,6 +52,7 @@ function selectUserWithTest(user: string, test: string) {
   const encodedTest =  encodeURIComponent(test)
   return `/patient/${encodedUser}/result/${encodedTest}`
 }
+ useHeadSafe({ title:"HLops - Patients"})
 
 const { data, pending, error } = CurlMock()
 

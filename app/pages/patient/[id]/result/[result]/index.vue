@@ -12,6 +12,9 @@ const  props = useRoute()
 const id = props.params.id;
 const result = props.params.result;
 const { data, pending, error } =  useFetch(`/api/result/${id}`)
+
+
+useHeadSafe({ title:"HLops - Patient result"})
 const  filterData = computed(() => {
   if (data) {
     const output = data.value?.data?.map((test) => {
