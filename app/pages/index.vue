@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/table'
 
 
+import {Eye,User} from "lucide-vue-next"
 const fileInput = ref<HTMLInputElement | null>(null)
 const files = ref()
 
@@ -84,24 +85,28 @@ const { data, pending, error } = CurlMock()
     <div v-else-if="error">Error: {{ error }}</div>
 
     <TableBody v-else>
-      <TableRow class="cursor-pointer"  v-for="user in data?.data" :key="user.user.patientID">
-        <TableCell class="font-medium cursor-pointer">
+      <TableRow   v-for="user in data?.data" :key="user.user.patientID">
+        <TableCell class="font-medium">
           {{ user.user.patientID }}
         </TableCell>
-          <TableCell class="cursor-pointer text-center"
+          <TableCell class=" text-center"
           > 
-          <NuxtLink :to="selectUser(user.user.patientID)">
-              {{ user.user.name}}
+          <NuxtLink  class=" cursor-pointer flex  justify-center   gap-3" :to="selectUser(user.user.patientID)">
+
+
+        <User></User>
+               {{ user.user.name}}
+
           </NuxtLink>
-
-
             </TableCell>
-        <TableCell    class="cursor-pointer text-left"
+        <TableCell    class="  text-left flex flex-row   "
           >
-          <NuxtLink :to="selectUserWithTest( user.order_info?.id as string, user.order_info?.testOrdered as string )"> 
+          <NuxtLink class=" cursor-pointer flex flex-row gap-3 " :to="selectUserWithTest( user.order_info?.id as string, user.order_info?.testOrdered as string )"> 
+        <Eye></Eye>
           {{user.order_info?.testOrdered }}
           </NuxtLink>
         </TableCell>
+          
       </TableRow>
     </TableBody>
   </Table>

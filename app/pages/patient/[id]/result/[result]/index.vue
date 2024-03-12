@@ -8,7 +8,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-
 const  props = useRoute()
 const id = props.params.id;
 const result = props.params.result;
@@ -62,14 +61,14 @@ const  filterResult = computed(() => {
         </TableHead>
         <TableHead class=""> Test name </TableHead>
         <TableHead class="text-left "> Value</TableHead>
+        <TableHead class="text-center"> ref::ever </TableHead>
         <TableHead class="text-center"> Reference Range </TableHead>
         <TableHead class="text-center"> Everlab Range </TableHead>
-        <TableHead class="text-center"> Reference </TableHead>
       </TableRow>
     </TableHeader>
 <div v-if="pending"></div>
     <TableBody v-else>
-      <TableRow class=""  v-if="data" v-for="test in  filterData">
+      <TableRow   v-if="data" v-for="test in  filterData">
         <TableCell class="font-medium" >
           {{ test?.results.id }}
         </TableCell>
@@ -80,13 +79,15 @@ const  filterResult = computed(() => {
           {{ test?.results.value}}
         </TableCell>
          <TableCell class="text-center">
+           {{ get_range(test?.results.value, test?.diagnostic_metric.standardLower, test?.diagnostic_metric.standardHigher, 30) }} ::
+           
+            {{ get_range(test?.results.value, test?.diagnostic_metric.everlabLower, test?.diagnostic_metric.everlabHigher, 30) }}
+        </TableCell>
+          <TableCell class="text-center">
           {{ test?.results.referenceRange}}
         </TableCell>
           <TableCell class="text-center">
-            {{ get_range(test?.results.value, test?.diagnostic_metric.standardLower, test?.diagnostic_metric.standardHigher, 30) }}
-        </TableCell>
-          <TableCell class="text-center">
-          {{ test?.diagnostic_metric.standardLower }}-{{ test?.diagnostic_metric.standardHigher}}
+          {{ test?.diagnostic_metric.everlabLower }}-{{ test?.diagnostic_metric.everlabHigher}}
         </TableCell>
       </TableRow>
     </TableBody>
