@@ -29,13 +29,19 @@ const  filterData = computed(() => {
   }
 })
 
-const get_range = (value: string, lower: number, higher: number, range: number) => {
+const get_range = (value: string | null |  undefined, lower: number | undefined, higher: number |undefined , range: number) => {
 function categorizeValue(value: number, rangeStart: number, rangeEnd: number, thresholdPercentage: number): string {
     // Normalize the value to a 0-1 scale
-    const normalizedValue = (value - rangeStart) / (rangeEnd - rangeStart);
+    console.log(value, rangeStart, rangeEnd, thresholdPercentage)
+    let normalizedValue = (value - rangeStart) / (rangeEnd - rangeStart) * -1;
+    if (normalizedValue < 0) {
+      normalizedValue = normalizedValue * -1
+    }
+     console.log("norm",normalizedValue)
     // Convert thresholdPercentage into a decimal
     const threshold = thresholdPercentage / 100;
     if (normalizedValue <= threshold) {
+    
         return 'low';
     } else if (normalizedValue >= 1 - threshold) {
         return 'high';
@@ -43,7 +49,18 @@ function categorizeValue(value: number, rangeStart: number, rangeEnd: number, th
         return 'normal';
     }
 }
-  const input = parseInt(value)
+  if ( value  == undefined || lower == undefined || higher == undefined) {
+    return 'invalid';
+  }
+
+
+  let val = value?.split("<^").length > 1 ?   value?.split("<^")[1] :  value?.split("<^")[0]
+
+console.log(val)
+
+
+
+  const input = parseInt(val)
    return categorizeValue(input, lower, higher, range) 
 }
 

@@ -47,7 +47,13 @@ type PatientInfo = {
     dob: string;
     patientID: string;
 }
-function selectUserWithTest(user: string, test: string) {
+function selectUserWithTest(user: number| undefined , test: string | null | undefined) {
+  if (user === undefined || test === null) {
+    return ""
+  }
+  if (test === undefined) {
+    return ""
+  }
   const encodedUser =  encodeURIComponent(user)
   const encodedTest =  encodeURIComponent(test)
   return `/patient/${encodedUser}/result/${encodedTest}`
@@ -78,6 +84,7 @@ const { data, pending, error } = CurlMock()
         </TableHead>
         <TableHead class=" text-center">Patient Name </TableHead>
         <TableHead class="text-left" >Test Ordered</TableHead>
+        <TableHead class="text-left" >Observation date </TableHead>
       </TableRow>
     </TableHeader>
 
@@ -87,11 +94,11 @@ const { data, pending, error } = CurlMock()
 
     <TableBody v-else>
       <TableRow   v-for="user in data?.data" :key="user.user.patientID">
+
         <TableCell class="font-medium">
           {{ user.user.patientID }}
         </TableCell>
-          <TableCell class=" text-center"
-          > 
+          <TableCell class=" text-center"> 
           <NuxtLink  class=" cursor-pointer flex  justify-center   gap-3" :to="selectUser(user.user.patientID)">
 
 
@@ -100,14 +107,16 @@ const { data, pending, error } = CurlMock()
 
           </NuxtLink>
             </TableCell>
-        <TableCell    class="  text-left flex flex-row   "
-          >
-          <NuxtLink class=" cursor-pointer flex flex-row gap-3 " :to="selectUserWithTest( user.order_info?.id as string, user.order_info?.testOrdered as string )"> 
+        <TableCell    class="  text-left flex flex-row">
+          <NuxtLink class=" cursor-pointer flex flex-row gap-3 " :to="selectUserWithTest( user.order_info?.id, user.order_info?.testOrdered)"> 
         <Eye></Eye>
           {{user.order_info?.testOrdered }}
           </NuxtLink>
+
         </TableCell>
-          
+        <TableCell class="font-medium">
+          {{ user.order_info?.observationDateTime }}
+        </TableCell>
       </TableRow>
     </TableBody>
   </Table>
