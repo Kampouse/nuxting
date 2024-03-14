@@ -15,11 +15,7 @@ const main = () => {
 
 
     const injectBaseHL7Data = async (InputData: Mockdata) => {
-        const dataExists = await checkIfDataExists()
-        if (dataExists) {
-            console.log("Data already exists in the database. Exiting...")
-            return
-        }
+
         InputData.then((data) => {
             data?.transformed.forEach(async (element) => {
                 const order_data = await db.insert(tables.orderInfoTable).values({
@@ -115,7 +111,7 @@ const main = () => {
 
                 //may caus issue
                 if (element.oru_sonic_codes.includes(";") == false) {
-                
+
                     db.insert(tables.diagnosticMetricTable).values({
                         name: element.name,
                         oruSonicCodes: element.oru_sonic_codes,

@@ -75,10 +75,14 @@ const { data, pending, error } = CurlMock()
 
     <div class="    flex  items-center justify-left pl-2    font-mono  from-neutral-950 text-3xl    h-12 bg-[#61A3BC]">patient=>list</div>
     
-<Table>
+    <div    v-if="!error" class="    flex  items-center justify-center pl-2    font-mono  from-neutral-950 text-3xl    h-10    bg-[#61A3BC]"> erorring :((</div>
+<Table v-if="!error">
 
-    <TableHeader>
+
+    <TableHeader  >
+
       <TableRow>
+
         <TableHead class="w-[100px]">
           Patient ID
         </TableHead>
@@ -86,24 +90,26 @@ const { data, pending, error } = CurlMock()
         <TableHead class="text-left" >Test Ordered</TableHead>
         <TableHead class="text-left" >Observation date </TableHead>
       </TableRow>
+
+
+
     </TableHeader>
 
 
     <div v-if="pending"></div>
-    <div v-else-if="error">Error: {{ error }}</div>
 
     <TableBody v-else>
-      <TableRow   v-for="user in data?.data" :key="user.user.patientID">
+      <TableRow   v-for="user in data?.data" :key="user.patient.patientID">
 
         <TableCell class="font-medium">
-          {{ user.user.patientID }}
+          {{ user.patient.patientID }}
         </TableCell>
           <TableCell class=" text-center"> 
-          <NuxtLink  class=" cursor-pointer flex  justify-center   gap-3" :to="selectUser(user.user.patientID)">
+          <NuxtLink  class=" cursor-pointer flex  justify-center   gap-3" :to="selectUser(user.patient.patientID)">
 
 
         <User></User>
-               {{ user.user.name}}
+               {{ user.patient.name}}
 
           </NuxtLink>
             </TableCell>

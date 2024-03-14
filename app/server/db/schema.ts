@@ -2,7 +2,7 @@ import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core'
 import { sql } from 'drizzle-orm';
 //replace / with %2F
 
-export const userTable = sqliteTable('user', {
+export const userTable = sqliteTable('patient', {
   id: integer('id').primaryKey({ autoIncrement: true }),
   patientID: text('patientID').notNull(),
   name: text('username').notNull(),

@@ -88,6 +88,7 @@ const  filterResult = computed(() => {
       </TableRow>
     </TableHeader>
 <div v-if="pending"></div>
+<div v-else-if="error">Error: {{ error }}</div>
     <TableBody v-else>
       <TableRow   v-if="data" v-for="test in  filterData">
         <TableCell class="font-medium" >
