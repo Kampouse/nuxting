@@ -136,7 +136,12 @@ type OBX = {
     // Additional fields can be defined here as needed
 };
 
-async function readFile(filePath: string) {
+async function readFile(filePath: string, is_file: boolean) {
+
+    if (!is_file) {
+        return filePath
+    }
+
     try {
         // Use fs.readFile in an async function with await
         const data = await promises.readFile(filePath, { encoding: 'utf8' });
@@ -155,10 +160,12 @@ const MshParser = (segment: string) => {
     const mshIntake = segment.split('|')
 }
 
-const HL7Parser = (fileName: string) => {
+const HL7Parser = (fileName: string, is_file: boolean) => {
 
-    return readFile(fileName).then((data) => {
 
+
+    return readFile(fileName, is_file).then((data) => {
+        console.log(data)
         if (!data) {
             console.log('no data')
             return
@@ -487,7 +494,61 @@ function transformHL7Data(input_data: { MSH: MSH, PID: PID, PV1: PV1, ORC: ORC, 
     };
 }
 export async function MockData() {
-    const input = HL7Parser("./parser/test.oru.txt").then((data) => {
+    const input = HL7Parser("./parser/test.oru.txt", true).then((data) => {
+        return data
+    })
+    const database = getAllFile().then((data) => { return data })
+    return Promise.allSettled([input, database]).then((data) => {
+        const input = data[0]
+        const database = data[1]
+        if (input.status == 'fulfilled' && database.status == 'fulfilled') {
+            const input_data = input.value as { MSH: MSH, PID: PID, PV1: PV1, ORC: ORC, OBR: OBR, OBX: OBX[] }[]
+            const tranformed = input_data.map((item) => { return transformHL7Data(item) })
+            const database_data = database.value
+            const prettyFormatUser = (data: {
+                name: {
+                    name: string;
+                    middleName: string;
+                    degree: string;
+                };
+                dob: string;
+                patientID: string;
+            }) => {
+                const updateName = data.name.name.split('^').reverse().join(' ')
+                const PatientID = data.patientID.split('^')[0]
+                return { ...data, name: updateName, patientID: PatientID }
+            }
+            const prettyFormatOrder = (data: {
+                testOrdered: string;
+                observationDateTime: string;
+                orderStatus: string;
+                results: {
+                    test: string;
+                    value: string;
+                    units: string;
+                    referenceRange: string;
+                    resultStatus: string;
+                }[]
+            }) => {
+                //maybe trim the trailing : at the end
+                return {
+                    ...data, testOrdered: data.testOrdered.split('^')[1], results: data.results.map((item) => {
+                        return { ...item, test: item.test.split('^')[1] }
+                    })
+                }
+            }
+            const prettied = tranformed.map((item) => {
+                return {
+                    patientInfo: prettyFormatUser(item.patientInfo),
+                    orderInfo: prettyFormatOrder(item.orderInfo)
+                }
+            })
+                ; return { input_data, database_data, transformed: prettied }
+        }
+    })
+}
+export async function inject_data_from_post(post_input: string) {
+    const input = HL7Parser(post_input, false).then((data) => {
         return data
     })
     const database = getAllFile().then((data) => { return data })
@@ -540,4 +601,12 @@ export async function MockData() {
         }
     })
 }
+
+
+
+
+
+
+
+
 export type Mocky = ReturnType<typeof MockData>

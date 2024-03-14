@@ -59,30 +59,17 @@ function selectUserWithTest(user: number| undefined , test: string | null | unde
   return `/patient/${encodedUser}/result/${encodedTest}`
 }
  useHeadSafe({ title:"HLops - Patients"})
-
 const { data, pending, error } = CurlMock()
-
- 
 // make a computed property to get the results from the orderInfo
-
-
-
-
 </script>
 <template>
-  
   <main class="">
-
     <div class="    flex  items-center justify-left pl-2    font-mono  from-neutral-950 text-3xl    h-12 bg-[#61A3BC]">patient=>list</div>
     
-    <div    v-if="!error" class="    flex  items-center justify-center pl-2    font-mono  from-neutral-950 text-3xl    h-10    bg-[#61A3BC]"> erorring :((</div>
+    <div    v-if="error" class="    flex  items-center justify-center pl-2    font-mono  from-neutral-950 text-3xl    h-10    bg-[#61A3BC]"> erorring :((</div>
 <Table v-if="!error">
-
-
     <TableHeader  >
-
       <TableRow>
-
         <TableHead class="w-[100px]">
           Patient ID
         </TableHead>
@@ -90,27 +77,17 @@ const { data, pending, error } = CurlMock()
         <TableHead class="text-left" >Test Ordered</TableHead>
         <TableHead class="text-left" >Observation date </TableHead>
       </TableRow>
-
-
-
     </TableHeader>
-
-
     <div v-if="pending"></div>
-
     <TableBody v-else>
       <TableRow   v-for="user in data?.data" :key="user.patient.patientID">
-
         <TableCell class="font-medium">
           {{ user.patient.patientID }}
         </TableCell>
           <TableCell class=" text-center"> 
           <NuxtLink  class=" cursor-pointer flex  justify-center   gap-3" :to="selectUser(user.patient.patientID)">
-
-
         <User></User>
                {{ user.patient.name}}
-
           </NuxtLink>
             </TableCell>
         <TableCell    class="  text-left flex flex-row">
@@ -118,7 +95,6 @@ const { data, pending, error } = CurlMock()
         <Eye></Eye>
           {{user.order_info?.testOrdered }}
           </NuxtLink>
-
         </TableCell>
         <TableCell class="font-medium">
           {{ user.order_info?.observationDateTime }}

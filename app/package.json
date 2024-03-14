@@ -4,6 +4,7 @@
   "scripts": {
     "build": "nuxt build",
     "start": "node  .output/server/index.mjs",
+    "prod-start": " npm  run fresh && node  .output/server/index.mjs",
     "dev": "nuxt dev --dotenv .env",
     "fresh": "npx drizzle-kit push:sqlite &&  pnpm run seed",
     "seed": "npx tsx  ./parser/seed.ts",

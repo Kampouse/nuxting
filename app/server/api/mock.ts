@@ -4,7 +4,6 @@ import { InsertUser, userTable, orderInfoTable } from "../db/schema"
 import { useDB } from "../db/drizzle"
 import { eq } from "drizzle-orm";
 
-const db = useDB()
 export default defineEventHandler(async (event) => {
 	//const data = await MockData();
 	const db = useDB();
