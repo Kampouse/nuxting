@@ -13,9 +13,13 @@ import { useFileDialog } from '@vueuse/core'
 
 import {Eye,User, UploadCloudIcon} from "lucide-vue-next"
 
-const fileInput = ref<HTMLInputElement | null>(null)
+const  isValidFile = ref(true)
+const  Submitable = ref(false)
 const { files, open, reset, onChange } = useFileDialog({
-  accept: "*oru", // Set to accept only image files
+
+
+
+  accept: "*.oru.txt", // Set to accept only image files
   directory: false, // Select directories instead of files if set true
 })
 function CurlMock() {
@@ -23,7 +27,18 @@ function CurlMock() {
   return { data, pending, error }
 }
 onChange((files) => {
-  console.log(files,"clean")
+   //determine if the file end by .oru
+  if (files?.item(0)?.name?.endsWith(".oru.txt") && files?.length >= 1) {
+
+      isValidFile.value = true
+      Submitable.value = true
+    console.log(files.length,"clean")
+  }
+  else if (files?.length >= 1){
+    console.log(files?.length," not clean")
+    isValidFile.value = false
+      Submitable.value = false
+  }
 
 
 })
@@ -61,8 +76,10 @@ const { data, pending, error } = CurlMock()
 
 <div @click="open" class=" cursor-pointer flex flex-row items-center gap-2" >
     <UploadCloudIcon size="30"    />
-    <h1> name + {{  }}</h1>
+    <h1 v-if="isValidFile" class="text-sm">  {{ files?.item(0)?.name }}</h1>
+    <h1 v-else class="text-sm">invalid file</h1>
 </div>
+  <button v-if="Submitable" class="bg-[#61A3BC] text-black  text-md px-3 py-1 rounded-md" @click="reset">Upload</button>
       patient=>list
     </div>
     <div  v-if="error" class="flex items-center justify-center pl-2 font-mono from-neutral-950 text-3xl h-10 bg-[#61A3BC]"> erorring :((</div>
