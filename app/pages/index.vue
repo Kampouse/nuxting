@@ -9,33 +9,23 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { useFileDialog } from '@vueuse/core'
 
+import {Eye,User, UploadCloudIcon} from "lucide-vue-next"
 
-import {Eye,User} from "lucide-vue-next"
 const fileInput = ref<HTMLInputElement | null>(null)
-const files = ref()
+const { files, open, reset, onChange } = useFileDialog({
+  accept: "*oru", // Set to accept only image files
+  directory: false, // Select directories instead of files if set true
+})
 
-function handleFileChange() {
-  files.value = fileInput.value?.files
-}
-
-function doSomething() {
-  const file = files.value[0]
-  // and do other things...
-}
 function CurlMock() {
-
   const { data, pending, error } = useFetch('/api/mock');
-
-
   return { data, pending, error }
 }
 
 function selectUser(user: string) {
-
-// take the first part of the string until teh 
-
-const encoded =   encodeURIComponent(user)
+const encoded =  encodeURIComponent(user)
   return`/patient/${encoded}`
 }
 type PatientInfo = {
@@ -60,13 +50,19 @@ function selectUserWithTest(user: number| undefined , test: string | null | unde
 }
  useHeadSafe({ title:"HLops - Patients"})
 const { data, pending, error } = CurlMock()
-// make a computed property to get the results from the orderInfo
 </script>
 <template>
   <main class="">
-    <div class="    flex  items-center justify-left pl-2    font-mono  from-neutral-950 text-3xl    h-12 bg-[#61A3BC]">patient=>list</div>
-    
-    <div    v-if="error" class="    flex  items-center justify-center pl-2    font-mono  from-neutral-950 text-3xl    h-10    bg-[#61A3BC]"> erorring :((</div>
+    <div class="flex  gap-3 items-center justify-start pl-2    font-mono  from-neutral-950 text-3xl  h-12 bg-[#61A3BC]">
+
+
+<div @click="open" class=" cursor-pointer flex flex-row items-center gap-2" >
+    <UploadCloudIcon size="30" class="==="   />
+    <h1>{{ files?.item(0)?.name  }}</h1>
+</div>
+      patient=>list
+    </div>
+    <div  v-if="error" class="flex items-center justify-center pl-2 font-mono from-neutral-950 text-3xl h-10 bg-[#61A3BC]"> erorring :((</div>
 <Table v-if="!error">
     <TableHeader  >
       <TableRow>
@@ -105,10 +101,4 @@ const { data, pending, error } = CurlMock()
   </main>
 </template>
 <style scoped>
-
-  
-
-
-
 </style>
-

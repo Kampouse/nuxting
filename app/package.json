@@ -9,7 +9,6 @@
     "fresh": "npx drizzle-kit push:sqlite &&  pnpm run seed",
     "seed": "npx tsx  ./parser/seed.ts",
     "studio": "npx drizzle-kit studio",
-
     "generate": "nuxt generate",
     "preview": "nuxt preview"
   },
@@ -18,6 +17,7 @@
     "@libsql/client": "^0.5.3",
     "@nuxt/content": "^2.11.0",
     "@nuxtjs/tailwindcss": "^6.11.4",
+    "@vueuse/core": "^10.9.0",
     "better-sqlite3": "^9.4.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",

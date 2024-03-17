@@ -14,7 +14,7 @@ const id = props.params.id;
 const result = props.params.result;
 const { data, pending, error } =  useFetch(`/api/result/${id}`)
 
-
+console.log(data)
 useHeadSafe({ title:"HLops - Patient result"})
 const  filterData = computed(() => {
   if (data) {
@@ -32,12 +32,10 @@ const  filterData = computed(() => {
 const get_range = (value: string | null |  undefined, lower: number | undefined, higher: number |undefined , range: number) => {
 function categorizeValue(value: number, rangeStart: number, rangeEnd: number, thresholdPercentage: number): string {
     // Normalize the value to a 0-1 scale
-    console.log(value, rangeStart, rangeEnd, thresholdPercentage)
     let normalizedValue = (value - rangeStart) / (rangeEnd - rangeStart) * -1;
     if (normalizedValue < 0) {
       normalizedValue = normalizedValue * -1
     }
-     console.log("norm",normalizedValue)
     // Convert thresholdPercentage into a decimal
     const threshold = thresholdPercentage / 100;
     if (normalizedValue <= threshold) {
@@ -55,17 +53,13 @@ function categorizeValue(value: number, rangeStart: number, rangeEnd: number, th
 
 
   let val = value?.split("<^").length > 1 ?   value?.split("<^")[1] :  value?.split("<^")[0]
-
-console.log(val)
-
-
-
   const input = parseInt(val)
    return categorizeValue(input, lower, higher, range) 
 }
 
 const  filterResult = computed(() => {
   if (data) {
+    console.log(data)
     return data.value?.output
   }
 })
