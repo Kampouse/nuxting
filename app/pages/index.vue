@@ -18,12 +18,15 @@ const { files, open, reset, onChange } = useFileDialog({
   accept: "*oru", // Set to accept only image files
   directory: false, // Select directories instead of files if set true
 })
-
 function CurlMock() {
   const { data, pending, error } = useFetch('/api/mock');
   return { data, pending, error }
 }
+onChange((files) => {
+  console.log(files,"clean")
 
+
+})
 function selectUser(user: string) {
 const encoded =  encodeURIComponent(user)
   return`/patient/${encoded}`
@@ -57,8 +60,8 @@ const { data, pending, error } = CurlMock()
 
 
 <div @click="open" class=" cursor-pointer flex flex-row items-center gap-2" >
-    <UploadCloudIcon size="30" class="==="   />
-    <h1>{{ files?.item(0)?.name  }}</h1>
+    <UploadCloudIcon size="30"    />
+    <h1> name + {{  }}</h1>
 </div>
       patient=>list
     </div>
