@@ -11,20 +11,18 @@ import {
 } from '@/components/ui/table'
 import { useFileDialog } from '@vueuse/core'
 
-import {Eye,User, UploadCloudIcon} from "lucide-vue-next"
+import {Eye,User, UploadCloudIcon, Trash2 } from "lucide-vue-next"
+import { ConsoleLogWriter } from 'drizzle-orm';
 
 const  isValidFile = ref(true)
 const  Submitable = ref(false)
 const { files, open, reset, onChange } = useFileDialog({
-
-
-
   accept: "*.oru.txt", // Set to accept only image files
   directory: false, // Select directories instead of files if set true
 })
 function CurlMock() {
-  const { data, pending, error } = useFetch('/api/mock');
-  return { data, pending, error }
+  const { data, pending, error,refresh } = useFetch('/api/mock');
+  return { data, pending, error,refresh }
 }
 onChange((files) => {
    //determine if the file end by .oru
@@ -66,21 +64,57 @@ function selectUserWithTest(user: number| undefined , test: string | null | unde
   const encodedTest =  encodeURIComponent(test)
   return `/patient/${encodedUser}/result/${encodedTest}`
 }
+function upload_result() {
+  return $fetch("/api/upload", {
+    method: "POST",
+    body: files.value?.item(0)
+
+  }).then((e) => {
+    if (e) {
+      reset()
+      refresh()
+    }
+     
+  }
+
+  )
+  
+}
+function delete_result() {
+  return $fetch("/api/delete", {
+    method: "DELETE",
+  }).then((e) => {
+    if (e) {
+      refresh()
+    }
+     
+  }
+
+  )
+}
+
+
+
  useHeadSafe({ title:"HLops - Patients"})
-const { data, pending, error } = CurlMock()
+const { data, pending, error,refresh } = CurlMock()
 </script>
 <template>
   <main class="">
     <div class="flex  gap-3 items-center justify-start pl-2    font-mono  from-neutral-950 text-3xl  h-12 bg-[#61A3BC]">
 
 
-<div @click="open" class=" cursor-pointer flex flex-row items-center gap-2" >
+<div @click="open" class=" cursor-pointer flex flex-row items-center gap-1" >
     <UploadCloudIcon size="30"    />
     <h1 v-if="isValidFile" class="text-sm">  {{ files?.item(0)?.name }}</h1>
     <h1 v-else class="text-sm">invalid file</h1>
 </div>
-  <button v-if="Submitable" class="bg-[#61A3BC] text-black  text-md px-3 py-1 rounded-md" @click="reset">Upload</button>
+
+<button @click="delete_result" class="cursor-pointer">
+    <Trash2 size="30"></Trash2 >
+</button>
+  <button v-if="Submitable" class="bg-[#61A3BC] text-black  text-md px-3 py-1 rounded-md" @click="upload_result">Upload</button>
       patient=>list
+
     </div>
     <div  v-if="error" class="flex items-center justify-center pl-2 font-mono from-neutral-950 text-3xl h-10 bg-[#61A3BC]"> erorring :((</div>
 <Table v-if="!error">

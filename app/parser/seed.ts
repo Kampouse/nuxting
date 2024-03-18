@@ -4,6 +4,15 @@ import { useDB } from '~/server/db/drizzle';
 import * as tables from '~/server/db/schema';
 import type { diagnostic_metric } from './index';
 
+export type Mockdata = ReturnType<typeof MockData>
+
+
+
+
+
+
+
+
 const main = () => {
     let db = useDB()
 
@@ -169,6 +178,5 @@ const main = () => {
 
 
 main()
-
-
+console.log("what")
 

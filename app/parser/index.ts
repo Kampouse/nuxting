@@ -160,12 +160,10 @@ const MshParser = (segment: string) => {
     const mshIntake = segment.split('|')
 }
 
-const HL7Parser = (fileName: string, is_file: boolean) => {
-
+export const HL7Parser = (fileName: string, is_file: boolean) => {
 
 
     return readFile(fileName, is_file).then((data) => {
-        console.log(data)
         if (!data) {
             console.log('no data')
             return
