@@ -18,6 +18,6 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
-  modules: ['@nuxt/content']
+  modules: ['@nuxt/content', '@nuxtjs/tailwindcss']
 })
 // config.SOME_PRIVATE_VAR
