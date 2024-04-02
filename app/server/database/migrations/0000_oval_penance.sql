@@ -43,7 +43,7 @@ CREATE TABLE `results` (
 	FOREIGN KEY (`order_info_id`) REFERENCES `order_info`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
-CREATE TABLE `user` (
+CREATE TABLE `patient` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
 	`patientID` text NOT NULL,
 	`username` text NOT NULL,
@@ -52,5 +52,3 @@ CREATE TABLE `user` (
 	`order_info_table_id` integer,
 	FOREIGN KEY (`order_info_table_id`) REFERENCES `order_info`(`id`) ON UPDATE no action ON DELETE no action
 );
---> statement-breakpoint
-DROP TABLE `todos`;
