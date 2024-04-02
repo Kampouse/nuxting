@@ -2,8 +2,8 @@
 export default defineNuxtConfig({
 
   runtimeConfig: {
-    turso_key :  process.env.TURSO_AUTH_TOKEN,
-     turso_url: process.env.TURSO_CONNECTION_URL 
+    turso_key: process.env.TURSO_AUTH_TOKEN,
+    turso_url: process.env.TURSO_CONNECTION_URL
   },
   devtools: {
     enabled: true,
@@ -13,6 +13,7 @@ export default defineNuxtConfig({
     },
   },
   css: ['~/assets/css/tailwind.css'],
+
   postcss: {
     plugins: {
       tailwindcss: {},
