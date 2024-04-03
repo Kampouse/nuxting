@@ -11,12 +11,12 @@ export default defineEventHandler(async (event) => {
 		patientID: "1234"
 	}
 	const status = await db.insert(userTable).values(user).execute();
-	const data = await db.select().from(userTable).execute();
+	//const data = await db.select().from(userTable).execute();
 	//const data = await MockData();
-	//const data = await event.context.db.select().from(userTable)
+	const data = await event.context.db.select().from(userTable).execute();
 	//.leftJoin(orderInfoTable, eq(userTable.orderInfoTableId, orderInfoTable.id)).execute();
 	//return { data };
-	return { data: data};
+	return { data: ""};
 }
 
 
