@@ -3,7 +3,7 @@ import { InsertUser, userTable, orderInfoTable } from "../db/schema"
 import { eq } from "drizzle-orm";
 
 export default defineEventHandler(async (event) => {
-	const db = event.context.db;
+	const db = event.context.db.;
 	const user: InsertUser = {
 
 		name: "John who",

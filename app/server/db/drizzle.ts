@@ -34,12 +34,14 @@ export const localDB = () => {
 
 }
 export function initializeDrizzle(D1: D1Database) {
-
+/*
   if (import.meta.dev) {
     return localDB()
+  }
+  */
 
     return drizzleD1(D1)
-  }
+  
 
 
 }
