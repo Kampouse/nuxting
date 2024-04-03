@@ -4,13 +4,17 @@ import type { DrizzleD1Database } from "drizzle-orm/d1"
 
 
 
-export const useDb = () => drizzle
 
 let drizzle: ReturnType<typeof initializeDrizzle>
 
 export default defineEventHandler(async (event) => {
-      const { DB } = event.context.cf
-  event.context.db = drizzle
+    if( event.context?.cloudflare?.env){
+      const { DB } = event.context?.cloudflare.env
+        drizzle = initializeDrizzle(DB )
+        event.context.db = drizzle
+    }      
+
+
 })
 
 declare module "h3" {

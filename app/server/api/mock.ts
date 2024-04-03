@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
 	const data = await event.context.db.select().from(userTable).execute();
 	//.leftJoin(orderInfoTable, eq(userTable.orderInfoTableId, orderInfoTable.id)).execute();
 	//return { data };
-	return { data: ""};
+	return { data: data};
 }
 
 

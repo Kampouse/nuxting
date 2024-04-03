@@ -10,12 +10,6 @@ import { H3Event } from 'h3'
 import type { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
 import type { DrizzleD1Database } from "drizzle-orm/d1"
 export let _db: BetterSQLite3Database | LibSQLDatabase | D1Database | null = null
-export interface Env {
-  DB: D1Database;
-
-}
-
-
 export { sql, eq, and, or } from 'drizzle-orm'
 
 export function initializeDrizzle(D1: D1Database) {
