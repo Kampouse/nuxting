@@ -21,6 +21,6 @@ export default defineNuxtConfig({
     },
   },
 
-  modules: ['@nuxt/content', '@nuxtjs/tailwindcss',   "nitro-cloudflare-dev"],
+  modules: ['@nuxt/content', '@nuxtjs/tailwindcss', "nitro-cloudflare-dev"],
 })
 // config.SOME_PRIVATE_VAR

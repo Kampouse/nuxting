@@ -1,9 +1,21 @@
-<script setup lang="ts">
- const data = useFetch('/api/mock')
+<script lang="ts" setup>
+const data = null
+if ( data && !data.value) {
+  navigateTo("/login")
+}
+
+async function handleLogout() {
+  try {
+    await $fetch("/api/logout", {
+      method: "POST",
+    })
+
+    navigateTo("/login")
+  } catch (error) {
+    console.log(error)
+  }
+}
 </script>
 <template>
-  <div>
-    {{ data.data.value }}
-  </div>
+ <button @click="handleLogout">Logout</button>
 </template>
-<style scoped></style>
