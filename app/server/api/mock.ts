@@ -3,7 +3,6 @@ import { InsertUser, userTable, orderInfoTable } from "../db/schema"
 import { eq } from "drizzle-orm";
 
 export default defineEventHandler(async (event) => {
-	console.log("Hej", event.context)
 	const db = event.context.db;
 	const user: InsertUser = {
 
@@ -11,13 +10,13 @@ export default defineEventHandler(async (event) => {
 		dob: "01/01/2000",
 		patientID: "1234"
 	}
-	await db.insert(userTable).values(user).execute();
-	console.log("Hej", event.context)
+	const status = await db.insert(userTable).values(user).execute();
+	const data = await db.select().from(userTable);
 	//const data = await MockData();
 	//const data = await event.context.db.select().from(userTable)
 	//.leftJoin(orderInfoTable, eq(userTable.orderInfoTableId, orderInfoTable.id)).execute();
 	//return { data };
-	return { data: "Hello World" };
+	return { data: data};
 }
 
 
