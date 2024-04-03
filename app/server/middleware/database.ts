@@ -9,12 +9,12 @@ export const useDb = () => drizzle
 export default defineEventHandler(async (event) => {
 
 
-    if (!drizzle && import.meta.dev) {
+    /*if (!drizzle && import.meta.dev) {
         drizzle = localDB()
         event.context.db = drizzle
     }
-
-    if (!drizzle && !import.meta.dev) {
+    */
+    if (!drizzle ) {
 
         const { DB } = event.context.cloudflare?.env
         drizzle = initializeDrizzle(DB)
