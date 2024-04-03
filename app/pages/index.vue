@@ -2,7 +2,8 @@
  const data = useFetch('/api/mock')
 </script>
 <template>
-  <h1> some average pages </h1>
+  <div>
   {{ data.data.value }}
+  </div>
 </template>
 <style scoped></style>
