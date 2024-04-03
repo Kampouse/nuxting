@@ -16,8 +16,8 @@ export default defineEventHandler(async (event) => {
     */
     if (!drizzle ) {
 
-        const { DB } = event.context.cloudflare?.env
-        drizzle = initializeDrizzle(DB)
+         
+        drizzle = initializeDrizzle(event.context.cloudflare.env.DB)
         event.context.db = drizzle
     }
 
