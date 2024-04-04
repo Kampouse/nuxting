@@ -1,9 +1,4 @@
 <script lang="ts" setup>
-const data = null
-if ( data && !data.value) {
-  navigateTo("/login")
-}
-
 async function handleLogout() {
   try {
     await $fetch("/api/logout", {
