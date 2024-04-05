@@ -11,15 +11,18 @@ async function handlePasswordLogin(e:Event) {
   formData.append("password", password.value)
     console.log(formData)
   try {
-    await $fetch("/api/login/password/signin", {
+   const outpout =  await $fetch("/api/login/password/signin", {
       method: "POST",
       body: formData,
     })
+ if (outpout) {
+  console.log(outpout)
+  navigateTo("/profile")
+}
   } catch (error: any) {
     //toast.add({ title: error.response._data.message })
   }
 
-  navigateTo("/profile")
 }
 
 async function handleRegister(e:Event) {
