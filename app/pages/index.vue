@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-async function handleLogout() {
+async function handleLogout(e) {
+  e.preventDefault()
   try {
     await $fetch("/api/logout", {
       method: "POST",

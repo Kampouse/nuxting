@@ -2,7 +2,8 @@
 const username = ref("")
 const password = ref("")
 
-async function handlePasswordLogin() {
+async function handlePasswordLogin(e:Event) {
+  e.preventDefault()
   if (!username.value || !password.value) return
 
   const formData = new FormData()
@@ -18,28 +19,12 @@ async function handlePasswordLogin() {
     //toast.add({ title: error.response._data.message })
   }
 
- // navigateTo("/")
+  navigateTo("/profile")
 }
 
-async function handleRegister() {
-  if (!username.value || !password.value) return
-
-  const formData = new FormData()
-  formData.append("username", username.value)
-  formData.append("password", password.value)
-
-  try {
-    await $fetch("/api/login/password/signup", {
-      method: "POST",
-      body: formData,
-    })
-  } catch (error: any) {
-    //toast.add({ title: error.response._data.message })
-  }
-
-  //toast.add({ title: "User created!" })
-
-  navigateTo("/")
+async function handleRegister(e:Event) {
+  e.preventDefault()
+  navigateTo("/register")
 }
 </script>
 
