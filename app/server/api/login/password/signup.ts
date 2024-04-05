@@ -36,19 +36,20 @@ export default defineEventHandler(async (event) => {
     const userId = generateId(15)
 
     try {
+        console.log("user", user)
         await db.insert(user).values({
             id: userId,
             username,
             hashedPassword,
-        })
-
+        }).catch((error) => { })
         const session = await lucia.createSession(userId, {})
         appendHeader(
             event,
             "Set-Cookie",
             lucia.createSessionCookie(session.id).serialize()
         )
-    } catch {
+    } catch (e) {
+        console.error(e)
         // db error, email taken, etc
         throw createError({
             status: 400,

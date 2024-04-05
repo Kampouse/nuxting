@@ -37,7 +37,6 @@ export default defineEventHandler(async (event) => {
         .from(user)
         .where(eq(user.username, username))
         .get()
-
     if (!existingUser || !existingUser.hashedPassword) {
         // NOTE:
         // Returning immediately allows malicious actors to figure out valid emails/username from response times,
