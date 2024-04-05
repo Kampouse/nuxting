@@ -72,6 +72,7 @@ export default defineEventHandler(async (event) => {
         lucia.createSessionCookie(session.id).serialize()
     )
 
-    // NOTE: It's recommended to setup a cron-job to delete expired sessions
     await lucia.deleteExpiredSessions()
+ return { data: { id: existingUser.id } }
+    // NOTE: It's recommended to setup a cron-job to delete expired sessions
 })
