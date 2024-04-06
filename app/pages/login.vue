@@ -18,16 +18,10 @@ async function handlePasswordLogin(e: Event) {
     if (outpout) {
       navigateTo("/profile");
     }
-  } catch (error: any) {
+  } catch (error:  any) {
     //toast.add({ title: error.response._data.message })
   }
 }
-async function handleGithub(e: Event) {
-  e.preventDefault();
-useFetch("/api/login/github")
- 
-}
-
 
 async function  handleRegister(e: Event) {
   e.preventDefault();
@@ -40,9 +34,10 @@ async function  handleRegister(e: Event) {
     <div class="w-80">
       <div class="space-y-4 justify-center">
         <div class="flex justify-center items-center">
-          <a icon="i-heroicons-oauth"  href="/api/login/github">
-            Login with GitHub
-          </a>
+          <NuxtLink to="/api/login/github" icon="i-heroicons-oauth" :external="true">
+            Login with github
+
+          </NuxtLink>
         </div>
         <p class="text-center text-sm py-1 text-gray-400">OR</p>
         <hr />

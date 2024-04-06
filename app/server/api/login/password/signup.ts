@@ -41,7 +41,7 @@ export default defineEventHandler(async (event) => {
             id: userId,
             username,
             hashedPassword,
-        }).catch((error) => { })
+        }).catch((error: Error) => { })
         const session = await lucia.createSession(userId, {})
         appendHeader(
             event,

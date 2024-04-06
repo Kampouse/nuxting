@@ -2,13 +2,16 @@
 const username = ref("")
 const password = ref("")
 const re_password = ref("")
+const isInvalid = computed(() => password.value !== re_password.value)
 async function handleRegister(e: Event) {
     e.preventDefault()
   if (!username.value || !password.value) return
   const formData = new FormData()
   formData.append("username", username.value)
   formData.append("password", password.value)
-
+    if (password.value !== re_password.value) {
+        return
+    }
   try {
        await $fetch("/api/login/password/signup", {
       method: "POST",
@@ -31,7 +34,13 @@ async function handleRegister(e: Event) {
         </div>
          <form class=" flex   h-80 flex-col justify-center items-center gap-2   border border-gray-400 rounded-md  ">
         <input  v-model="username" class=" w-40  p-1 border rounded-md border-gray-400 " name="username" placeholder="username" icon="i-heroicons-user" />
-        <input v-model="password" class="w-40  p-1  border rounded-md border-gray-400 " type="password" name="password" placeholder="Password" icon="i-heroicons-lock-closed" />
+        <input v-model="password" 
+      :class="{'border-red-500': isInvalid}" 
+       class="w-40 p-1 border rounded-md border-gray-400" 
+        type="password" name="password" 
+        placeholder="Password" 
+        
+        icon="i-heroicons-lock-closed" />
         <input v-model="re_password" class="w-40  p-1  border rounded-md border-gray-400 " type="password" name="password" placeholder="retype password" icon="i-heroicons-lock-closed" />
  
         <div clas=" flex  flex-end justify-end w-screen">
