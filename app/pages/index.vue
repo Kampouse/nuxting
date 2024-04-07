@@ -1,21 +1,31 @@
 <script lang="ts" setup>
+  const user = useUser();
 
+
+console.log( "hello",user.value);
   const data =  useFetch("/api/user/user")
-async function handleLogout(e:Event) {
-  e.preventDefault()
-  try {
-    await $fetch("/api/logout", {
-      method: "POST",
-    })
+async function logout(e:Event) {
+  e.preventDefault();
 
-    navigateTo("/login")
-  } catch (error) {
-    console.log(error)
-  }
-  console.log(data)
+	 $fetch("/api/user/logout", {
+		method: "POST"
+	}).then(async(res) => {
+     
+    
+  }).catch((error) => {
+
+    console.log(error);
+  });
+      navigateTo("/login");
 }
+ 
+
+
+
 </script>
 <template>
   <h1> {{ data.data }}</h1>
- <button @click="handleLogout">Logout</button>
+
+<button @click="logout">logout</button>
+
 </template>

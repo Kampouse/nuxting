@@ -36,7 +36,6 @@ export default defineEventHandler(async (event) => {
     const userId = generateId(15)
 
     try {
-        console.log("user", user)
         await db.insert(user).values({
             id: userId,
             username,

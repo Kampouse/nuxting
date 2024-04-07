@@ -12,4 +12,5 @@ export default eventHandler(async (event) => {
         "Set-Cookie",
         lucia.createBlankSessionCookie().serialize()
     )
+    return { message: "Logged out" }
 })

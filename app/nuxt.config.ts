@@ -23,7 +23,27 @@ export default defineNuxtConfig({
   },
   hooks: {
 
+    'pages:extend'(pages) {
+      function setMiddleware(pages: NuxtPage[]) {
+        for (const page of pages) {
+          // Checking if the page path starts with `/app`
+          if (page.path.startsWith('/app')) {
 
+            console.log("Page", page)
+            page.meta ||= {}
+            // Sets `auth` middleware, assuming 'auth' is the name of your authentication middleware
+            // This will also include the previously set 'named' middleware if the condition is met
+            page.meta.middleware = ['protected', ...(page.meta.middleware || [])];
+          }
+          // Additional condition to set 'named' middleware if needed
+          // You can adjust this condition as per your requirements
+          if (page.children) {
+            setMiddleware(page.children)
+          }
+        }
+      }
+      setMiddleware(pages)
+    }
 
 
 

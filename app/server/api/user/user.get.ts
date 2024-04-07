@@ -6,6 +6,6 @@ export default defineEventHandler((event) => {
             statusMessage: "Unauthorized",
         })
     }
-    console.log(user)
+    console.log("User is logged in", user.username)
     return user
 })
