@@ -1,4 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import type { NuxtPage } from 'nuxt/schema'
 export default defineNuxtConfig({
 
   runtimeConfig: {
@@ -20,7 +21,14 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
+  hooks: {
 
+
+
+
+
+
+  },
   modules: ['@nuxt/content', '@nuxtjs/tailwindcss', "nitro-cloudflare-dev"],
 })
 // config.SOME_PRIVATE_VAR

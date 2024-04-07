@@ -6,6 +6,6 @@ export default defineEventHandler((event) => {
             statusMessage: "Unauthorized",
         })
     }
-
+    console.log(user)
     return user
 })
