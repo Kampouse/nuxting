@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
     const formData = await readFormData(event)
     const username = formData.get("username")
     const password = formData.get("password")
-
+   await lucia.deleteExpiredSessions()
     if (
         typeof username !== "string" ||
         username.length < 3 ||

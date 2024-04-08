@@ -1,6 +1,7 @@
 import { verifyRequestOrigin } from "lucia"
 import { initializeLucia } from "../utils/auth"
 import type { User, Session } from "lucia"
+import { loadNuxtModuleInstance } from "nuxt/kit"
 
 let lucia: ReturnType<typeof initializeLucia>
 
@@ -35,6 +36,7 @@ export default defineEventHandler(async (event) => {
 
         const { session, user } = await lucia.validateSession(sessionId)
         if (session && session.fresh) {
+             await lucia.deleteExpiredSessions()
             appendResponseHeader(
                 event,
                 "Set-Cookie",
@@ -42,6 +44,7 @@ export default defineEventHandler(async (event) => {
             )
         }
         if (!session) {
+            await lucia.deleteExpiredSessions()
             appendResponseHeader(
                 event,
                 "Set-Cookie",

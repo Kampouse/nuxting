@@ -19,10 +19,8 @@ async function handleRegister(e: Event) {
     })
   } catch (error: any) {
       return error
-    //toast.add({ title: error.response._data.message })
   }
-  //toast.add({ title: "User created!" })
-  navigateTo("/profile")
+     await navigateTo("/app/profile")
 }
 </script>
 
@@ -51,9 +49,6 @@ async function handleRegister(e: Event) {
       </form>
       <div>
         <div class="flex flex-col  gap-3 justify-center">
-
-          
-
          </div> 
         </div>
       </div>

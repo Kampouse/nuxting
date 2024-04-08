@@ -1,9 +1,7 @@
 <script lang="ts" setup>
+import { useUser } from '~/composables/auth';
   const user = useUser();
-
-
-console.log( "hello",user.value);
-  const data =  useFetch("/api/user/user")
+const data =  useFetch("/api/user/user")
 async function logout(e:Event) {
   e.preventDefault();
 
@@ -13,15 +11,10 @@ async function logout(e:Event) {
      
     
   }).catch((error) => {
-
     console.log(error);
   });
       navigateTo("/login");
 }
- 
-
-
-
 </script>
 <template>
   <h1> {{ data.data }}</h1>
