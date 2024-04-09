@@ -13,7 +13,7 @@ dependencies:
     version: 0.5.6
   '@lucia-auth/adapter-sqlite':
     specifier: ^3.0.1
-    version: 3.0.1(@libsql/client@0.5.6)(better-sqlite3@9.4.3)(lucia@3.1.1)
+    version: 3.0.1(@libsql/client@0.5.6)(better-sqlite3@9.4.5)(lucia@3.1.1)
   '@nuxt/content':
     specifier: ^2.11.0
     version: 2.12.1(nuxt@3.11.1)(vue@3.4.21)
@@ -33,8 +33,8 @@ dependencies:
     specifier: ^1.5.0
     version: 1.5.0
   better-sqlite3:
-    specifier: ^9.4.3
-    version: 9.4.3
+    specifier: ^9.4.5
+    version: 9.4.5
   class-variance-authority:
     specifier: ^0.7.0
     version: 0.7.0
@@ -46,7 +46,7 @@ dependencies:
     version: 3.0.0
   drizzle-orm:
     specifier: ^0.29.5
-    version: 0.29.5(@aws-sdk/client-rds-data@3.540.0)(@libsql/client@0.5.6)(better-sqlite3@9.4.3)
+    version: 0.29.5(@aws-sdk/client-rds-data@3.540.0)(@libsql/client@0.5.6)(better-sqlite3@9.4.5)
   lucia:
     specifier: ^3.1.1
     version: 3.1.1
@@ -81,7 +81,7 @@ devDependencies:
     version: 0.20.14
   nuxt:
     specifier: ^3.11.1
-    version: 3.11.1(@libsql/client@0.5.6)(@unocss/reset@0.58.7)(better-sqlite3@9.4.3)(drizzle-orm@0.29.5)(floating-vue@5.2.2)(unocss@0.58.7)(vite@5.2.6)
+    version: 3.11.1(@libsql/client@0.5.6)(@unocss/reset@0.58.7)(better-sqlite3@9.4.5)(drizzle-orm@0.29.5)(floating-vue@5.2.2)(unocss@0.58.7)(vite@5.2.6)
   postcss:
     specifier: ^8.4.35
     version: 8.4.38
@@ -2150,7 +2150,7 @@ packages:
     requiresBuild: true
     optional: true
 
-  /@lucia-auth/adapter-sqlite@3.0.1(@libsql/client@0.5.6)(better-sqlite3@9.4.3)(lucia@3.1.1):
+  /@lucia-auth/adapter-sqlite@3.0.1(@libsql/client@0.5.6)(better-sqlite3@9.4.5)(lucia@3.1.1):
     resolution: {integrity: sha512-bzr8+HALrbiYMb/+oL1SAnjbgFqlPs/Kj4lO57t/VvbXzmbpQEKk5Nv6hMpvWSkGAR9LbxYeQAtecikpKZVB0w==}
     peerDependencies:
       '@libsql/client': ^0.3.0
@@ -2163,7 +2163,7 @@ packages:
         optional: true
     dependencies:
       '@libsql/client': 0.5.6
-      better-sqlite3: 9.4.3
+      better-sqlite3: 9.4.5
       lucia: 3.1.1
     dev: false
 
@@ -2970,7 +2970,7 @@ packages:
       '@nuxt/kit': 3.11.1
       '@nuxt/schema': 3.11.1
       execa: 7.2.0
-      nuxt: 3.11.1(@libsql/client@0.5.6)(@unocss/reset@0.58.7)(better-sqlite3@9.4.3)(drizzle-orm@0.29.5)(floating-vue@5.2.2)(unocss@0.58.7)(vite@5.2.6)
+      nuxt: 3.11.1(@libsql/client@0.5.6)(@unocss/reset@0.58.7)(better-sqlite3@9.4.5)(drizzle-orm@0.29.5)(floating-vue@5.2.2)(unocss@0.58.7)(vite@5.2.6)
       vite: 5.2.6
     transitivePeerDependencies:
       - rollup
@@ -3020,7 +3020,7 @@ packages:
       launch-editor: 2.6.1
       local-pkg: 0.5.0
       magicast: 0.3.3
-      nuxt: 3.11.1(@libsql/client@0.5.6)(@unocss/reset@0.58.7)(better-sqlite3@9.4.3)(drizzle-orm@0.29.5)(floating-vue@5.2.2)(unocss@0.58.7)(vite@5.2.6)
+      nuxt: 3.11.1(@libsql/client@0.5.6)(@unocss/reset@0.58.7)(better-sqlite3@9.4.5)(drizzle-orm@0.29.5)(floating-vue@5.2.2)(unocss@0.58.7)(vite@5.2.6)
       nypm: 0.3.8
       ohash: 1.1.3
       pacote: 17.0.6
@@ -4932,7 +4932,7 @@ packages:
       '@vueuse/core': 10.9.0(vue@3.4.21)
       '@vueuse/metadata': 10.9.0
       local-pkg: 0.5.0
-      nuxt: 3.11.1(@libsql/client@0.5.6)(@unocss/reset@0.58.7)(better-sqlite3@9.4.3)(drizzle-orm@0.29.5)(floating-vue@5.2.2)(unocss@0.58.7)(vite@5.2.6)
+      nuxt: 3.11.1(@libsql/client@0.5.6)(@unocss/reset@0.58.7)(better-sqlite3@9.4.5)(drizzle-orm@0.29.5)(floating-vue@5.2.2)(unocss@0.58.7)(vite@5.2.6)
       vue-demi: 0.14.7(vue@3.4.21)
     transitivePeerDependencies:
       - '@vue/composition-api'
@@ -5188,8 +5188,8 @@ packages:
   /base64-js@1.5.1:
     resolution: {integrity: sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==}
 
-  /better-sqlite3@9.4.3:
-    resolution: {integrity: sha512-ud0bTmD9O3uWJGuXDltyj3R47Nz0OHX8iqPOT5PMspGqlu/qQFn+5S2eFBUCrySpavTjFXbi4EgrfVvPAHlImw==}
+  /better-sqlite3@9.4.5:
+    resolution: {integrity: sha512-uFVyoyZR9BNcjSca+cp3MWCv6upAv+tbMC4SWM51NIMhoQOm4tjIkyxFO/ZsYdGAF61WJBgdzyJcz4OokJi0gQ==}
     requiresBuild: true
     dependencies:
       bindings: 1.5.0
@@ -5806,7 +5806,7 @@ packages:
     resolution: {integrity: sha512-0R9ikRb668HB7QDxT1vkpuUBtqc53YyAwMwGeUFKRojY/NWKvdZ+9UYtRfGmhqNbRkTSVpMbmyhXipFFv2cb/A==}
     engines: {node: '>= 12'}
 
-  /db0@0.1.4(@libsql/client@0.5.6)(better-sqlite3@9.4.3)(drizzle-orm@0.29.5):
+  /db0@0.1.4(@libsql/client@0.5.6)(better-sqlite3@9.4.5)(drizzle-orm@0.29.5):
     resolution: {integrity: sha512-Ft6eCwONYxlwLjBXSJxw0t0RYtA5gW9mq8JfBXn9TtC0nDPlqePAhpv9v4g9aONBi6JI1OXHTKKkUYGd+BOrCA==}
     peerDependencies:
       '@libsql/client': ^0.5.2
@@ -5821,8 +5821,8 @@ packages:
         optional: true
     dependencies:
       '@libsql/client': 0.5.6
-      better-sqlite3: 9.4.3
-      drizzle-orm: 0.29.5(@aws-sdk/client-rds-data@3.540.0)(@libsql/client@0.5.6)(better-sqlite3@9.4.3)
+      better-sqlite3: 9.4.5
+      drizzle-orm: 0.29.5(@aws-sdk/client-rds-data@3.540.0)(@libsql/client@0.5.6)(better-sqlite3@9.4.5)
 
   /debug@2.6.9:
     resolution: {integrity: sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA==}
@@ -6038,7 +6038,7 @@ packages:
       - supports-color
     dev: true
 
-  /drizzle-orm@0.29.5(@aws-sdk/client-rds-data@3.540.0)(@libsql/client@0.5.6)(better-sqlite3@9.4.3):
+  /drizzle-orm@0.29.5(@aws-sdk/client-rds-data@3.540.0)(@libsql/client@0.5.6)(better-sqlite3@9.4.5):
     resolution: {integrity: sha512-jS3+uyzTz4P0Y2CICx8FmRQ1eplURPaIMWDn/yq6k4ShRFj9V7vlJk67lSf2kyYPzQ60GkkNGXcJcwrxZ6QCRw==}
     peerDependencies:
       '@aws-sdk/client-rds-data': '>=3'
@@ -6111,7 +6111,7 @@ packages:
     dependencies:
       '@aws-sdk/client-rds-data': 3.540.0
       '@libsql/client': 0.5.6
-      better-sqlite3: 9.4.3
+      better-sqlite3: 9.4.5
 
   /duplexer@0.1.2:
     resolution: {integrity: sha512-jtD6YG370ZCIi/9GTaJKQxWTZD045+4R4hTk/x1UyoqadyJ9x9CgSi1RlVDQF8U2sxLLSnFkCaMihqljHIWgMg==}
@@ -8372,7 +8372,7 @@ packages:
       pkg-types: 1.0.3
     dev: false
 
-  /nitropack@2.9.5(@libsql/client@0.5.6)(better-sqlite3@9.4.3)(drizzle-orm@0.29.5):
+  /nitropack@2.9.5(@libsql/client@0.5.6)(better-sqlite3@9.4.5)(drizzle-orm@0.29.5):
     resolution: {integrity: sha512-ClanSILi9O6HX95QNIC+TwxojpRpOSn9n3e3wmHExAHhLN5HdnHGmHN4LwtJdE2p91nse3kDULOTR7k1xRVJ/g==}
     engines: {node: ^16.11.0 || >=17.0.0}
     hasBin: true
@@ -8403,7 +8403,7 @@ packages:
       cookie-es: 1.0.0
       croner: 8.0.1
       crossws: 0.2.4
-      db0: 0.1.4(@libsql/client@0.5.6)(better-sqlite3@9.4.3)(drizzle-orm@0.29.5)
+      db0: 0.1.4(@libsql/client@0.5.6)(better-sqlite3@9.4.5)(drizzle-orm@0.29.5)
       defu: 6.1.4
       destr: 2.0.3
       dot-prop: 8.0.2
@@ -8691,7 +8691,7 @@ packages:
       - vue
     dev: false
 
-  /nuxt@3.11.1(@libsql/client@0.5.6)(@unocss/reset@0.58.7)(better-sqlite3@9.4.3)(drizzle-orm@0.29.5)(floating-vue@5.2.2)(unocss@0.58.7)(vite@5.2.6):
+  /nuxt@3.11.1(@libsql/client@0.5.6)(@unocss/reset@0.58.7)(better-sqlite3@9.4.5)(drizzle-orm@0.29.5)(floating-vue@5.2.2)(unocss@0.58.7)(vite@5.2.6):
     resolution: {integrity: sha512-CsncE1dxP0cmOYT+PBdjMD0bOK8eZizG5tgNWUOJAAAtU45sO38maoBumYYL2kUpT/SC/dMP+831DAcVPvi9pQ==}
     engines: {node: ^14.18.0 || >=16.10.0}
     hasBin: true
@@ -8734,7 +8734,7 @@ packages:
       knitwork: 1.0.0
       magic-string: 0.30.8
       mlly: 1.6.1
-      nitropack: 2.9.5(@libsql/client@0.5.6)(better-sqlite3@9.4.3)(drizzle-orm@0.29.5)
+      nitropack: 2.9.5(@libsql/client@0.5.6)(better-sqlite3@9.4.5)(drizzle-orm@0.29.5)
       nuxi: 3.11.1
       nypm: 0.3.8
       ofetch: 1.3.4

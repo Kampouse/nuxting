@@ -2,6 +2,9 @@ import { verifyRequestOrigin } from "lucia"
 import { initializeLucia } from "../utils/auth"
 import type { User, Session } from "lucia"
 import { loadNuxtModuleInstance } from "nuxt/kit"
+import { BetterSqlite3Adapter, D1Adapter } from "@lucia-auth/adapter-sqlite"
+import { _db } from "../db/drizzle"
+import { drizzle } from "drizzle-orm/better-sqlite3"
 
 let lucia: ReturnType<typeof initializeLucia>
 
@@ -20,11 +23,32 @@ export default defineEventHandler(async (event) => {
     }
 
     // Initialize auth (Lucia)
-    if (event.context?.cloudflare?.env) {
-        const { DB } = event.context?.cloudflare?.env
-        if (!lucia) {
-            lucia = initializeLucia(DB)
+    if (event.context) {
+        if (!lucia && event.context?.cloudflare?.env) {
+
+            const adapter = new D1Adapter(event.context?.cloudflare?.env?.DB, {
+                user: "user",
+                session: "session",
+            })
+
+
+
+
+            lucia = initializeLucia(adapter)
         }
+        else if (!lucia) {
+            const adpter = new BetterSqlite3Adapter(_db, {
+                user: "user",
+                session: "session",
+            })
+
+            lucia = initializeLucia(adpter)
+
+
+
+        }
+
+
         event.context.lucia = lucia
         // Set session and user
         const sessionId = getCookie(event, lucia.sessionCookieName) ?? null
@@ -36,7 +60,7 @@ export default defineEventHandler(async (event) => {
 
         const { session, user } = await lucia.validateSession(sessionId)
         if (session && session.fresh) {
-             await lucia.deleteExpiredSessions()
+            await lucia.deleteExpiredSessions()
             appendResponseHeader(
                 event,
                 "Set-Cookie",

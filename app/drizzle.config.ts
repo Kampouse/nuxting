@@ -5,21 +5,32 @@ const {
 	LOCAL_DB_PATH,
 } = process.env;
 
-// Use better-sqlite driver for local development
-export default LOCAL_DB_PATH
-	? ({
-			schema: "./server/db/schema.ts",
-			driver: "better-sqlite",
-			dbCredentials: {
-				url: LOCAL_DB_PATH,
-			},
-		} satisfies Config)
-	: ({
-			schema: "./server/db/schema.ts",
-			out: "./server/database/migrations",
-			driver: "d1",
-			dbCredentials: {
-				  wranglerConfigPath: "wrangler.toml",
-    			  dbName: "nuxting-db",
-			},
-		} satisfies Config);
+
+
+
+
+
+const LOCAL = {
+	schema: "./server/db/schema.ts",
+	driver: "better-sqlite",
+	dbCredentials: {
+		url: "db.sqlite", // just put it here cause you may not have a cloudflae
+	},
+} satisfies Config
+
+
+
+const CF = {
+	schema: "./server/db/schema.ts",
+	out: "./server/database/migrations",
+	driver: "d1",
+	dbCredentials: {
+		wranglerConfigPath: "wrangler.toml",
+		dbName: "db", //rename it
+	} satisfies Config
+}
+
+
+
+// by default i place it to local so you dont have to  use cf 
+export default LOCAL

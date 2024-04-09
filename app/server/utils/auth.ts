@@ -1,12 +1,12 @@
 import { Lucia } from "lucia"
-import { D1Adapter } from "@lucia-auth/adapter-sqlite"
+import { D1Adapter, BetterSqlite3Adapter } from "@lucia-auth/adapter-sqlite"
 import { GitHub } from "arctic"
+import type { BetterSQLite3Database } from "drizzle-orm/better-sqlite3"
+export function initializeLucia(adapter: D1Adapter | BetterSqlite3Adapter) {
 
-export function initializeLucia(D1: D1Database) {
-    const adapter = new D1Adapter(D1, {
-        user: "user",
-        session: "session",
-    })
+
+
+
     return new Lucia(adapter, {
         sessionCookie: {
             attributes: {

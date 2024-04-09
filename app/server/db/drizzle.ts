@@ -13,14 +13,16 @@ export let _db: BetterSQLite3Database | LibSQLDatabase | D1Database | null = nul
 export { sql, eq, and, or } from 'drizzle-orm'
 
 export function initializeDrizzle(D1: D1Database) {
-/*
-  if (import.meta.dev) {
-    return localDB()
-  }
-  */
 
+  if (D1) {
     return drizzleD1(D1)
-  
+  }
+  _db = new Database(join(process.cwd(), 'db.sqlite'), { verbose: consola.level === 3 ? consola.debug : undefined })
+  return drizzle(_db)
+
+
+
+
 
 
 }
