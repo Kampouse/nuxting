@@ -11,7 +11,6 @@
     "fresh": "npx drizzle-kit push:sqlite --driver  better-sqlite --schema ./server/db/drizzle.ts --url  db.sqlite",
     "gendb": "npx  drizzle-kit  generate:sqlite --schema server/db/schema.ts && npx  drizzle-kit  push:sqlite",
     "remotedb": "npx wrangler d1 execute nuxting-db  --remote  --file drizzle/0000_eminent_exodus.sql",
-    "seed": "npx tsx  ./parser/seed.ts",
     "local": "npx drizzle-kit studio dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview"
